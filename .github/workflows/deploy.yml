@@ -35,7 +35,8 @@ jobs:
           python tools/build.py "$MODE"
           if [ "$MODE" = "live" ]; then echo "SERVER_DIR=$LIVE_DIR" >> "$GITHUB_ENV"; else echo "SERVER_DIR=$STAGE_DIR" >> "$GITHUB_ENV"; fi
       - name: Show target
-        run: echo "Target: $SERVER_DIR ($MODE)"
+        run: |
+          echo "Target: $SERVER_DIR ($MODE)"
       - name: Upload changed files via FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
