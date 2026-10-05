@@ -42,7 +42,13 @@ else:
     xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{u}</loc><lastmod>{today}</lastmod></url>\n' for u in urls) + '</urlset>\n'
     open(os.path.join(DST, 'sitemap.xml'), 'w', newline='\n').write(xml)
     open(os.path.join(DST, 'robots.txt'), 'w', newline='\n').write(f'User-agent: *\nAllow: /\nSitemap: {BASE}sitemap.xml\n')
-    open(os.path.join(DST, '.htaccess'), 'w', newline='\n').write(ERR + '''RewriteEngine On
+    # the old WordPress site's addresses, sent on to the new pages (search engines keep their ranking)
+    OLD = {'productpage': 'products.html', 'product/the-towing-line': 'towing-line.html', 'product/the-4x4-set': '4x4-set.html', 'product/the-snowmobile-set': 'snowmobile-set.html',
+           'product/outdoor-set': 'outdoor-set.html', 'product/the-hunting-set': 'hunting-set.html', 'product/the-dog-leash': 'dog-leash.html', 'product/the-hunting-leash': 'hunting-leash.html',
+           'product/runlock-pro': 'pro-pack.html', 'product/pre-cut-box': 'pre-cut-box.html', 'product/runlock-pro-bulk-roll': 'bulk-roll.html', 'product/walking-rope': 'walking-rope.html',
+           'product/line-up': 'washing-line.html', 'community': 'videos.html', 'contact': 'contact.html', 'runlock-privacy-policy': 'privacy.html', 'about': 'about.html'}
+    redirects = ''.join(f'RedirectMatch 301 ^/{a}/?$ {BASE}{b}\n' for a, b in OLD.items())
+    open(os.path.join(DST, '.htaccess'), 'w', newline='\n').write(ERR + redirects + '''RewriteEngine On
 RewriteCond %{HTTPS} off [OR]
 RewriteCond %{HTTP_HOST} ^www\\. [NC]
 RewriteRule ^ https://runlock.se%{REQUEST_URI} [L,R=301]
