@@ -6,6 +6,19 @@
 <title>Custom loop rope, made to your spec | RunLock</title>
 <meta name="description" content="For larger orders Texsolv braids RunLock to spec: any size, loops only where you need them, your length, your colour. Made in Sweden on our own machines, tested by RISE.">
 <link rel="stylesheet" href="site.css">
+<style>
+.pat{display:grid;gap:20px}
+.pat figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:8px;padding:clamp(18px,3vw,30px);display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:clamp(16px,3vw,40px);align-items:center}
+.pat .pat-ropes{display:grid;gap:18px;min-width:0}
+.pat .pat-ropes img{width:100%;height:auto;display:block}
+.pat .pat-row{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.pat .pat-row span{font-family:var(--disp);font-weight:600;font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg2)}
+.pat figcaption{display:flex;flex-direction:column;gap:8px}
+.pat figcaption b{font-family:var(--disp);font-weight:700;font-size:26px;line-height:1.1;letter-spacing:.01em}
+.pat figcaption p{margin:0;font-size:16px;color:var(--fg2)}
+.pat figcaption .tag{font-family:var(--disp);font-weight:600;font-size:14px;letter-spacing:.16em;text-transform:uppercase;color:var(--red)}
+@media (max-width:900px){.pat figure{grid-template-columns:1fr;gap:18px}}
+</style>
 <!-- head:common -->
 <link rel="canonical" href="https://runlock.se/custom.html">
 <link rel="icon" href="favicon.png" type="image/png" sizes="32x32"><link rel="icon" href="favicon-16.png" type="image/png" sizes="16x16"><link rel="icon" href="favicon-48.png" type="image/png" sizes="48x48"><link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -49,6 +62,45 @@ window.rlShowConsent=function(){var b=document.getElementById('cb');if(b)b.hidde
   <div class="bg"><img src="img/rolls.webp" alt="" width="1800" height="1000" fetchpriority="high"></div>
   <div class="wrap"><div style="max-width:760px"><div class="crumbs"><a href="index.html">Home</a><span>›</span><span>Made to your spec</span></div><div class="eyebrow">For companies</div><h1 style="margin-top:14px">Made to your spec.</h1><p class="lead">The six standard sizes are what we stock. For larger orders we make RunLock the way you need it: the rope is braided to order on our own machines in Tösse, so size, loop spacing, length and colour are all open.</p><div class="cta"><a class="btn btn-red" href="mailto:info@texsolv.se?subject=RunLock%20custom%20rope">Ask for a proposal <span class="arr">→</span></a><a class="btn btn-ghost" href="bulk-roll.html">The standard bulk roll</a></div></div></div>
 </header>
+<section class="sec white" id="patterns">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">What we can change</div>
+      <h2>Same rope. Your pattern.</h2>
+      <p class="lead">Standard RunLock has a loop every few centimetres along the whole length. On a special run the braiding machine is set up for your pattern instead: where the loops sit, how thick the rope is and which colours go into it. A few examples, drawn to the same scale.</p>
+    </div>
+    <div class="pat">
+      <figure>
+        <div class="pat-ropes"><picture><source media="(max-width:640px)" srcset="img/custom-std-m.webp"><img src="img/custom-std.webp" alt="Standard RunLock: a loop every few centimetres along the whole rope" width="2400" height="140" loading="lazy"></picture></div>
+        <figcaption><span class="tag">Standard</span><b>A loop every few centimetres.</b><p>This is the rope in the shop: joined every 40 to 65 mm, so there is always a loop where you need one. Six sizes, five colours.</p></figcaption>
+      </figure>
+      <figure>
+        <div class="pat-ropes"><picture><source media="(max-width:640px)" srcset="img/custom-far-m.webp"><img src="img/custom-far.webp" alt="RunLock with a braided stretch between the loops, so the loops sit further apart" width="2400" height="140" loading="lazy"></picture></div>
+        <figcaption><span class="tag">Loops further apart</span><b>A loop every metre, or every hundred.</b><p>Between the loops the two sides are braided straight through. The spacing is yours to choose: a loop every metre for a line of hooks, every 100 metres on a 1 000 metre roll, or spaced to match your product.</p></figcaption>
+      </figure>
+      <figure>
+        <div class="pat-ropes"><picture><source media="(max-width:640px)" srcset="img/custom-ends-m.webp"><img src="img/custom-ends.webp" alt="RunLock with a loop at each end only and a plain braided rope in between" width="2400" height="140" loading="lazy"></picture></div>
+        <figcaption><span class="tag">Loops only at the ends</span><b>100 metres with a loop at each end.</b><p>A plain braided rope with one fixed loop at either end, braided in rather than knotted or spliced. Cut to your length and sealed, every piece ready to use.</p></figcaption>
+      </figure>
+      <figure>
+        <div class="pat-ropes">
+          <div class="pat-row"><span>Thinner than No 4</span><picture><source media="(max-width:640px)" srcset="img/custom-thin-m.webp"><img src="img/custom-thin.webp" alt="A thin RunLock rope with short loops" width="2400" height="88" loading="lazy"></picture></div>
+          <div class="pat-row"><span>Standard No 8</span><picture><source media="(max-width:640px)" srcset="img/custom-std-m.webp"><img src="img/custom-std.webp" alt="A standard RunLock rope" width="2400" height="140" loading="lazy"></picture></div>
+          <div class="pat-row"><span>Thicker than No 20</span><picture><source media="(max-width:640px)" srcset="img/custom-thick-m.webp"><img src="img/custom-thick.webp" alt="A thick RunLock rope with long loops" width="2400" height="220" loading="lazy"></picture></div>
+        </div>
+        <figcaption><span class="tag">Any size</span><b>Thinner than No 4, thicker than No 20.</b><p>The size is the number of threads on each side. More threads give a thicker rope with longer loops and a higher breaking strength: we know today that we can make a rope that holds around 1 500 kg, and thicker is most likely possible. Tell us the load and we test it.</p></figcaption>
+      </figure>
+      <figure>
+        <div class="pat-ropes">
+          <div class="pat-row"><span>Two-colour braid</span><picture><source media="(max-width:640px)" srcset="img/custom-two-m.webp"><img src="img/custom-two.webp" alt="A RunLock rope braided from one black side and one fluorescent yellow side" width="2400" height="140" loading="lazy"></picture></div>
+          <div class="pat-row"><span>Your colour</span><picture><source media="(max-width:640px)" srcset="img/custom-blue-m.webp"><img src="img/custom-blue.webp" alt="A blue RunLock rope" width="2400" height="140" loading="lazy"></picture></div>
+          <div class="pat-row"><span>One colour per size</span><picture><source media="(max-width:640px)" srcset="img/custom-green-m.webp"><img src="img/custom-green.webp" alt="A green RunLock rope" width="2400" height="140" loading="lazy"></picture></div>
+        </div>
+        <figcaption><span class="tag">Your colour</span><b>Your colour, or two.</b><p>The two sides are braided from separate thread, so they can be different colours: black and fluorescent yellow as on the leashes and the snowmobile set, or a combination of your own. A colour for your brand, or one colour per size so your staff never mix them up.</p></figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
 <section class="sec">
   <div class="wrap">
     <div class="grid3">
@@ -88,10 +140,6 @@ window.rlShowConsent=function(){var b=document.getElementById('cb');if(b)b.hidde
   </div>
 </footer>
 <div class="cbv" id="cbv" hidden></div>
-<div class="cb" id="cb" role="dialog" aria-labelledby="cbh" hidden><div class="cbt"><h3 id="cbh">Cookies for visitor statistics?</h3><p>We would like to use Google Analytics to see which pages are read. No cookies are set unless you say yes. <a href="privacy.html">How we handle your data →</a></p></div><div class="cbb"><button type="button" class="y" onclick="rlConsent('yes')">Yes, that's fine</button><button type="button" onclick="rlConsent('no')">No thanks</button></div></div>
-<div class="cb" id="cb" role="dialog" aria-labelledby="cbh" hidden><div class="cbt"><h3 id="cbh">Cookies for visitor statistics?</h3><p>We would like to use Google Analytics to see which pages are read. No cookies are set unless you say yes. <a href="privacy.html">How we handle your data →</a></p></div><div class="cbb"><button type="button" class="y" onclick="rlConsent('yes')">Yes, that's fine</button><button type="button" onclick="rlConsent('no')">No thanks</button></div></div>
-<div class="cb" id="cb" role="dialog" aria-labelledby="cbh" hidden><div class="cbt"><h3 id="cbh">Cookies for visitor statistics?</h3><p>We would like to use Google Analytics to see which pages are read. No cookies are set unless you say yes. <a href="privacy.html">How we handle your data →</a></p></div><div class="cbb"><button type="button" class="y" onclick="rlConsent('yes')">Yes, that's fine</button><button type="button" onclick="rlConsent('no')">No thanks</button></div></div>
-<div class="cb" id="cb" role="dialog" aria-labelledby="cbh" hidden><div class="cbt"><h3 id="cbh">Cookies for visitor statistics?</h3><p>We would like to use Google Analytics to see which pages are read. No cookies are set unless you say yes. <a href="privacy.html">How we handle your data →</a></p></div><div class="cbb"><button type="button" class="y" onclick="rlConsent('yes')">Yes, that's fine</button><button type="button" onclick="rlConsent('no')">No thanks</button></div></div>
 <div class="cb" id="cb" role="dialog" aria-labelledby="cbh" hidden><div class="cbt"><h3 id="cbh">Cookies for visitor statistics?</h3><p>We would like to use Google Analytics to see which pages are read. No cookies are set unless you say yes. <a href="privacy.html">How we handle your data →</a></p></div><div class="cbb"><button type="button" class="y" onclick="rlConsent('yes')">Yes, that's fine</button><button type="button" onclick="rlConsent('no')">No thanks</button></div></div>
 <script src="nav.js"></script>
 </body>

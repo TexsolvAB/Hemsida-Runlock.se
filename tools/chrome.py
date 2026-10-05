@@ -124,7 +124,7 @@ def process(path):
     s = re.sub(r'<!-- head:common -->.*?<!-- /head:common -->\n?', '', s, flags=re.S)
     s = s.replace('</head>', head_common(fn, s) + '</head>', 1)
     s = re.sub(r'<nav class="nav" aria-label="Main">.*?</nav>\n(?:<script>\(function\(\)\{if\(\'scrollRestoration\'.*?</script>\n)?', nav_html(), s, count=1, flags=re.S)
-    s = re.sub(r'<footer>.*?</footer>\n(?:<div class="cbv".*?</div>\n)?', FOOTER, s, count=1, flags=re.S)
+    s = re.sub(r'<footer>.*?</footer>\n(?:<div class="cbv".*?</div>\n)?(?:<div class="cb" id="cb".*?</div></div>\n)*', FOOTER, s, count=1, flags=re.S)
     if '<script src="nav.js"></script>' not in s:
         s = s.replace('</body>', '<script src="nav.js"></script>\n</body>', 1)
     if s != o: open(path, 'w', encoding='utf-8', newline='\n').write(s)
