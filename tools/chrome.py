@@ -23,7 +23,7 @@ MENU = [
     ('Pro pack 10 m', 'pro-pack.html'), ('Bulk roll', 'bulk-roll.html'), ('Washing line', 'washing-line.html'),
     ('Walking rope', 'walking-rope.html'), ('Robot mower tow rope', 'robot-mower-rope.html')]),
   ('Videos', 'videos.html', []),
-  ('Company', 'about.html', [('About RunLock', 'about.html'), ('Questions and answers', 'faq.html'), ('Contact', 'contact.html'), ('Privacy and cookies', 'privacy.html')]),
+  ('Company', 'about.html', [('About RunLock', 'about.html'), ('Wholesale and B2B', 'wholesale.html'), ('Questions and answers', 'faq.html'), ('Contact', 'contact.html'), ('Privacy and cookies', 'privacy.html')]),
 ]
 CHEV = '<svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M1 3.5l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>'
 
@@ -52,7 +52,7 @@ FOOTER = '''<footer>
       <a class="brand" href="index.html" aria-label="RunLock home"><img src="img/logo-white.png" alt="RunLock" width="254" height="88"></a>
       <p style="margin-top:16px;max-width:320px">Much more than just a rope. Made by Texsolv AB in Tösse, Sweden, since 1983.</p>
     </div>
-    <div><h4>Products</h4><ul><li><a href="products.html">All products</a></li><li><a href="sizes.html">Sizes and colours</a></li><li><a href="pro-pack.html">Pro pack 10 m</a></li><li><a href="bulk-roll.html">Bulk roll</a></li><li><a href="custom.html">Made to your spec</a></li><li><a href="https://texsolvshop.com/collections/runlock">Webshop</a></li></ul></div>
+    <div><h4>Products</h4><ul><li><a href="products.html">All products</a></li><li><a href="sizes.html">Sizes and colours</a></li><li><a href="pro-pack.html">Pro pack 10 m</a></li><li><a href="bulk-roll.html">Bulk roll</a></li><li><a href="custom.html">Made to your spec</a></li><li><a href="wholesale.html">Wholesale and B2B</a></li><li><a href="https://texsolvshop.com/collections/runlock">Webshop</a></li></ul></div>
     <div><h4>Learn</h4><ul><li><a href="how-it-works.html">How it works</a></li><li><a href="try-it.html">Try it</a></li><li><a href="the-rope.html">The rope</a></li><li><a href="uses.html">Uses</a></li><li><a href="videos.html">Videos</a></li><li><a href="faq.html">Questions and answers</a></li></ul></div>
     <div><h4>Company</h4><ul><li><a href="about.html">About RunLock</a></li><li><a href="contact.html">Contact</a></li><li><a href="https://texsolv.se/">texsolv.se</a></li><li><a href="privacy.html">Privacy</a></li><li><button type="button" class="cookielink" onclick="rlShowConsent()">Cookies</button></li></ul></div>
     <div class="copy"><span>© <span data-year>2026</span> Texsolv AB. All rights reserved.</span><span>Company reg. no. 556311-9816 · Registered office: Åmål, Sweden</span></div>
