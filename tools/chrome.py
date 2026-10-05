@@ -20,7 +20,7 @@ MENU = [
   ('Products', 'products.html', [
     ('All products', 'products.html'), ('Towing line', 'towing-line.html'), ('4x4 offroad set', '4x4-set.html'), ('Snowmobile set', 'snowmobile-set.html'),
     ('Outdoor set', 'outdoor-set.html'), ('Hunting set', 'hunting-set.html'), ('Hunting leash', 'hunting-leash.html'), ('Dog leash', 'dog-leash.html'),
-    ('Pro pack 10 m', 'pro-pack.html'), ('Bulk roll', 'bulk-roll.html'), ('Pre-cut box', 'pre-cut-box.html'), ('Washing line', 'washing-line.html'),
+    ('Pro pack 10 m', 'pro-pack.html'), ('Bulk roll', 'bulk-roll.html'), ('Washing line', 'washing-line.html'),
     ('Walking rope', 'walking-rope.html'), ('Robot mower tow rope', 'robot-mower-rope.html')]),
   ('Videos', 'videos.html', []),
   ('Company', 'about.html', [('About RunLock', 'about.html'), ('Questions and answers', 'faq.html'), ('Contact', 'contact.html'), ('Privacy and cookies', 'privacy.html')]),
