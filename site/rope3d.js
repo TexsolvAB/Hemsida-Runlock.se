@@ -406,7 +406,7 @@ function init(host) {
   let camDist = 1000, yaw = 0, pitch = 0; const EL0 = Math.atan(0.2);
   function placeCamera() { const el = EL0 + pitch, R = camDist * Math.sqrt(1.04);
     camera.position.set(Math.sin(yaw) * Math.cos(el) * R, -Math.cos(yaw) * Math.cos(el) * R, 285 + Math.sin(el) * R); camera.up.set(0, 0, 1); camera.lookAt(0, 0, 285); }
-  function orbitBy(dx, dy) { yaw = Math.max(-0.7, Math.min(0.7, yaw + dx * 0.005)); pitch = Math.max(-0.12, Math.min(0.4, pitch + dy * 0.004)); placeCamera(); }
+  function orbitBy(dx, dy) { yaw = Math.max(-0.7, Math.min(0.7, yaw + dx * 0.005)); pitch = Math.max(-0.12, Math.min(0.4, pitch + dy * 0.004)); placeCamera(); if (typeof hideOrbitHint === 'function' && (Math.abs(dx) + Math.abs(dy)) > 2) hideOrbitHint(); }
 
   /* ---------- interaction ---------- */
   const ray = new THREE.Raycaster(), ndc = new THREE.Vector2(), plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0), hit = new THREE.Vector3();
@@ -528,6 +528,15 @@ function init(host) {
   ring.innerHTML = '<svg viewBox="0 0 64 64" aria-hidden="true"><circle class="pulse" cx="32" cy="32" r="22"/><circle class="track" cx="32" cy="32" r="22"/><circle class="bar" cx="32" cy="32" r="22" pathLength="100"/><path class="tick" d="M22 33l7 7 13-14"/></svg>';
   const ringBar = ring.querySelector('.bar');
   const handEl = document.createElement('div'); handEl.className = 'thand'; handEl.hidden = true; stage.appendChild(handEl);
+  /* a small animated reminder that the view can be turned: right-drag with a mouse, two fingers on a touch screen. Goes away once the view has been turned */
+  const coarse = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+  const orbitHint = document.createElement('div'); orbitHint.className = 'torbit'; orbitHint.setAttribute('aria-hidden', 'true');
+  orbitHint.innerHTML = (coarse
+    ? '<svg viewBox="0 0 44 40"><g class="mv"><circle cx="16" cy="22" r="6" fill="#d8121f" opacity=".85"/><circle cx="29" cy="18" r="6" fill="#d8121f" opacity=".85"/><circle cx="16" cy="22" r="9.5" fill="none" stroke="#d8121f" stroke-width="1.5" opacity=".35"/><circle cx="29" cy="18" r="9.5" fill="none" stroke="#d8121f" stroke-width="1.5" opacity=".35"/></g><path class="ch l" d="M7 15l-4 5 4 5" fill="none" stroke="#15171a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path class="ch r" d="M37 15l4 5-4 5" fill="none" stroke="#15171a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Two fingers: turn the view</span>'
+    : '<svg viewBox="0 0 44 40"><g class="mv"><rect x="14" y="5" width="16" height="28" rx="8" fill="#fff" stroke="#15171a" stroke-width="1.8"/><path d="M22 5v10M14 15h16" fill="none" stroke="#15171a" stroke-width="1.8"/><path class="rb" d="M22 6.2a7.2 7.2 0 0 1 7.2 7.2V15H22z" fill="#d8121f"/></g><path class="ch l" d="M7 15l-4 5 4 5" fill="none" stroke="#15171a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path class="ch r" d="M37 15l4 5-4 5" fill="none" stroke="#15171a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Hold the right button: turn the view</span>');
+  stage.appendChild(orbitHint);
+  let orbitHintOn = true; function hideOrbitHint() { if (!orbitHintOn) return; orbitHintOn = false; orbitHint.classList.add('off'); setTimeout(() => orbitHint.remove(), 700); }
+  setTimeout(hideOrbitHint, 40000);
   const v3 = new THREE.Vector3();
   function toStage(v) { const q = v3.copy(v).project(camera); const r = renderer.domElement.getBoundingClientRect(), s = stage.getBoundingClientRect(); return { x: r.left - s.left + (q.x + 1) / 2 * r.width, y: r.top - s.top + (1 - q.y) / 2 * r.height }; }
   function overlay() {

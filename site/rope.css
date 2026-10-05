@@ -26,6 +26,21 @@
 .rope .thand{position:absolute;z-index:3;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;pointer-events:none;background:rgba(216,18,31,.8);border:2.5px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,.3)}
 .rope .thand::after{content:"";position:absolute;left:9px;top:-13px;width:7px;height:15px;border-radius:4px;background:#fff}
 .rope .thand[hidden]{display:none}
+/* turn-the-view reminder */
+.rope .torbit{position:absolute;right:12px;top:12px;z-index:3;display:flex;align-items:center;gap:8px;padding:6px 14px 6px 8px;background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:999px;font-size:13px;line-height:1.2;color:var(--fg);pointer-events:none;box-shadow:0 4px 14px rgba(0,0,0,.12);transition:opacity .6s;max-width:calc(100% - 24px)}
+.rope .torbit.off{opacity:0}
+.rope .torbit svg{width:44px;height:40px;flex:none;display:block;overflow:visible}
+.rope .torbit .mv{animation:torbit 1.8s ease-in-out infinite}
+.rope .torbit .rb{animation:torbit-rb 1.8s ease-in-out infinite}
+.rope .torbit .ch{opacity:.25}
+.rope .torbit .ch.l{animation:torbit-chl 1.8s ease-in-out infinite}
+.rope .torbit .ch.r{animation:torbit-chr 1.8s ease-in-out infinite}
+@keyframes torbit{0%,100%{transform:translateX(-4px)}50%{transform:translateX(4px)}}
+@keyframes torbit-rb{0%,100%{opacity:.45}50%{opacity:1}}
+@keyframes torbit-chl{0%,100%{opacity:.9}50%{opacity:.15}}
+@keyframes torbit-chr{0%,100%{opacity:.15}50%{opacity:.9}}
+@media (prefers-reduced-motion:reduce){.rope .torbit .mv,.rope .torbit .rb,.rope .torbit .ch{animation:none}}
+@media (max-width:640px){.rope .torbit{right:8px;top:8px;font-size:12px;padding:5px 10px 5px 6px}.rope .torbit svg{width:36px;height:32px}}
 @keyframes tpulse{0%{transform:scale(.9);opacity:.9}100%{transform:scale(1.7);opacity:0}}
 @keyframes tspin{to{transform:rotate(360deg)}}
 .rope .tmsg{font-size:16px;line-height:1.42;color:#fff;padding:12px 14px;border-left:3px solid var(--red);background:rgba(255,255,255,.05);border-radius:0 6px 6px 0}

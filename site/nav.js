@@ -6,7 +6,7 @@
   var y = document.querySelector('[data-year]'); if (y) y.textContent = new Date().getFullYear();
   /* mark the current page in the menu */
   var here = location.pathname.split('/').pop() || 'index.html';
-  n.querySelectorAll('.menu a').forEach(function (a) { if (a.getAttribute('href').split('#')[0] === here) { a.setAttribute('aria-current', 'page'); var li = a.closest('.has-sub'); if (li) li.classList.add('here'); } });
+  n.querySelectorAll('.menu a').forEach(function (a) { if (a.getAttribute('href') === here) { a.setAttribute('aria-current', 'page'); var li = a.closest('.has-sub'); if (li) li.classList.add('here'); } });
   if (b) {
     b.addEventListener('click', function () { var o = n.classList.toggle('open'); b.setAttribute('aria-expanded', o ? 'true' : 'false'); if (o) closeSearch(); });
     n.querySelectorAll('.menu a').forEach(function (a) { a.addEventListener('click', function () { n.classList.remove('open'); b.setAttribute('aria-expanded', 'false'); }); });
