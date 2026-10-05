@@ -2,7 +2,7 @@ Hemsida Runlock.se
 ==================
 site/      hela sajten, färdiga html-filer (ingen byggmall som för texsolv.se). Bilder i site/img, filmer i site/video.
 tools/     build.py gör mappen _build/ som laddas upp: "stage" lägger på noindex, "live" gör sitemap.xml, robots.txt och .htaccess.
-.github/   deploy.yml laddar upp via FTPS till Oderland när man pushar (staging -> testmappen, main -> runlock.se/ när LIVE = true).
+.github/   deploy.yml laddar upp via FTPS till Oderland när man pushar (staging -> testmappen, main -> public_html/ när LIVE = true).
 
 Arbetsgång (samma som texsolv.se)
 - Claude redigerar i den här Dropbox-mappen och committar; du pushar från GitHub Desktop.
