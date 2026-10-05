@@ -1,12 +1,13 @@
 name: Deploy to Oderland
 # Samma strömbrytare som för texsolv.se: repovariabeln LIVE (Settings > Secrets and variables > Actions > Variables).
 #
-#   Alltid:                  staging -> STAGE_DIR (testbygge med noindex; mappen är testdomänens Document Root i cPanel)
-#   LIVE saknas/false (nu):  main    -> laddas inte upp alls
-#   LIVE = true (lansering): main    -> runlock.se/   (lanseringsbygge: sitemap, robots, .htaccess med https och utan www)
+#   Alltid:                  staging -> testdomänens mapp (testbygge med noindex; mappen är Document Root för
+#                                       long-black-anaconda.46-16-236-12.cpanel.site i cPanel)
+#   LIVE saknas/false (nu):  main    -> laddas inte upp alls (public_html/ rörs inte – där ligger gamla runlock.se)
+#   LIVE = true (lansering): main    -> public_html/  (lanseringsbygge: sitemap, robots, .htaccess med https och utan www)
 #
-# FTP-kontot är samma som för texsolv.se (Directory /home/texsolv, kontots rot); katalogerna anges relativt den.
-# Uppgifterna ligger i Secrets: FTP_SERVER, FTP_USERNAME, FTP_PASSWORD.
+# runlock.se har ett eget Oderland-konto (server 46.16.236.12). FTP-kontot i det kontots cPanel ska ha Directory = kontots
+# hemmapp (rot), katalogerna ovan anges relativt den. Uppgifterna ligger i Secrets: FTP_SERVER (IP-numret), FTP_USERNAME, FTP_PASSWORD.
 on:
   push:
     branches: [main, staging]
@@ -16,8 +17,8 @@ concurrency:
   group: deploy-${{ github.ref_name }}
   cancel-in-progress: false
 env:
-  STAGE_DIR: ny.runlock.se/
-  LIVE_DIR: runlock.se/
+  STAGE_DIR: long-black-anaconda.46-16-236-12.cpanel.site/
+  LIVE_DIR: public_html/
 jobs:
   deploy:
     runs-on: ubuntu-latest
