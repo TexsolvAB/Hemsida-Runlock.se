@@ -3,6 +3,27 @@
    live:  sitemap.xml, robots.txt som tillåter allt och en .htaccess som tvingar https och tar bort www (runlock.se utan www)."""
 import sys, os, shutil, datetime, re, json
 
+def bust(dst):
+    """Every css/js/json file gets a version stamp in the links (site.css?v=abc123), so browsers fetch the new file as soon as it changes."""
+    import hashlib
+    assets = ['site.css', 'rope.css', 'uses.css', 'nav.js', 'player.js', 'vidload.js', 'rope3d.js', 'search.json']
+    ver = {}
+    for a in assets:
+        q = os.path.join(dst, a)
+        if os.path.exists(q): ver[a] = hashlib.md5(open(q, 'rb').read()).hexdigest()[:8]
+    n = 0
+    for f in os.listdir(dst):
+        if not f.endswith('.html'): continue
+        q = os.path.join(dst, f); s = open(q, encoding='utf-8').read(); o = s
+        for a, v in ver.items():
+            s = s.replace(f'href="{a}"', f'href="{a}?v={v}"').replace(f'src="{a}"', f'src="{a}?v={v}"')
+        if s != o: open(q, 'w', encoding='utf-8', newline='\n').write(s); n += 1
+    q = os.path.join(dst, 'nav.js')
+    if os.path.exists(q) and 'search.json' in ver:
+        s = open(q, encoding='utf-8').read().replace("fetch('search.json')", f"fetch('search.json?v={ver['search.json']}')")
+        open(q, 'w', encoding='utf-8', newline='\n').write(s)
+    return n
+
 def search_index(dst):
     """search.json: title, url, description, headings and text of every page, for the site search."""
     import html as H
@@ -26,6 +47,7 @@ shutil.rmtree(DST, ignore_errors=True)
 shutil.copytree(SRC, DST, ignore=shutil.ignore_patterns('.git*', '.DS_Store', 'Thumbs.db', 'desktop.ini', '_to_delete*'))
 pages = sorted(f for f in os.listdir(DST) if f.endswith('.html'))
 print(f'search.json: {search_index(DST)} sidor')
+print(f'versionsstämplade länkar i {bust(DST)} sidor')
 ERR = 'ErrorDocument 404 /404.html\n'
 
 if MODE == 'stage':
