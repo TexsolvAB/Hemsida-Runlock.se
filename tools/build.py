@@ -49,6 +49,29 @@ pages = sorted(f for f in os.listdir(DST) if f.endswith('.html'))
 print(f'search.json: {search_index(DST)} sidor')
 print(f'versionsstämplade länkar i {bust(DST)} sidor')
 ERR = 'ErrorDocument 404 /404.html\n'
+# caching: html pages are always re-checked (so a new version shows at once); css/js carry a version stamp in the link and may be cached for a year
+CACHE = '''<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType text/html "access plus 0 seconds"
+ExpiresByType text/css "access plus 1 year"
+ExpiresByType application/javascript "access plus 1 year"
+ExpiresByType application/json "access plus 1 year"
+ExpiresByType image/webp "access plus 30 days"
+ExpiresByType image/jpeg "access plus 30 days"
+ExpiresByType image/png "access plus 30 days"
+ExpiresByType font/woff2 "access plus 1 year"
+ExpiresByType video/mp4 "access plus 30 days"
+ExpiresByType video/webm "access plus 30 days"
+</IfModule>
+<IfModule mod_headers.c>
+<FilesMatch "\\.html$">
+Header set Cache-Control "no-cache, must-revalidate"
+</FilesMatch>
+<FilesMatch "\\.(css|js|json|woff2)$">
+Header set Cache-Control "public, max-age=31536000, immutable"
+</FilesMatch>
+</IfModule>
+'''
 
 if MODE == 'stage':
     for f in pages:
@@ -56,7 +79,7 @@ if MODE == 'stage':
         s = s.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<meta name="robots" content="noindex, nofollow">', 1)
         open(p, 'w', encoding='utf-8', newline='\n').write(s)
     open(os.path.join(DST, 'robots.txt'), 'w', newline='\n').write('User-agent: *\nDisallow: /\n')
-    open(os.path.join(DST, '.htaccess'), 'w', newline='\n').write(ERR)
+    open(os.path.join(DST, '.htaccess'), 'w', newline='\n').write(ERR + CACHE)
     print(f'testbygge: {len(pages)} sidor med noindex')
 else:
     today = datetime.date.today().isoformat()
@@ -75,15 +98,5 @@ RewriteCond %{HTTPS} off [OR]
 RewriteCond %{HTTP_HOST} ^www\\. [NC]
 RewriteRule ^ https://runlock.se%{REQUEST_URI} [L,R=301]
 AddDefaultCharset utf-8
-<IfModule mod_expires.c>
-ExpiresActive On
-ExpiresByType image/webp "access plus 30 days"
-ExpiresByType image/jpeg "access plus 30 days"
-ExpiresByType image/png "access plus 30 days"
-ExpiresByType video/mp4 "access plus 30 days"
-ExpiresByType video/webm "access plus 30 days"
-ExpiresByType text/css "access plus 7 days"
-ExpiresByType application/javascript "access plus 7 days"
-</IfModule>
-''')
+''' + CACHE)
     print(f'lanseringsbygge: {len(urls)} adresser i sitemap.xml')

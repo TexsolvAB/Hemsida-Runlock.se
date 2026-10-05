@@ -110,7 +110,7 @@ def head_common(fn, s):
     ld = json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False)
     return ('<!-- head:common -->\n'
             f'<link rel="canonical" href="{url}">\n'
-            '<link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="icon" href="favicon.png" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="apple-touch-icon.png">\n'
+            '<link rel="icon" href="favicon.png" type="image/png" sizes="32x32"><link rel="icon" href="favicon-16.png" type="image/png" sizes="16x16"><link rel="icon" href="favicon-48.png" type="image/png" sizes="48x48"><link rel="apple-touch-icon" href="apple-touch-icon.png">\n'
             '<meta name="theme-color" content="#d8121f">\n'
             f'<meta property="og:title" content="{html.escape(title, quote=True)}"><meta property="og:description" content="{html.escape(desc, quote=True)}"><meta property="og:image" content="{img}"><meta property="og:url" content="{url}"><meta property="og:type" content="website"><meta property="og:site_name" content="RunLock"><meta property="og:locale" content="en_GB"><meta name="twitter:card" content="summary_large_image">\n'
             '<link rel="preload" href="fonts/barlow-condensed-700.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>\n'
