@@ -1,0 +1,41 @@
+"""Bygger den mapp som laddas upp (_build/) från site/.
+   stage: varje sida får <meta name="robots" content="noindex"> och robots.txt stänger ute sökmotorer (testsajten).
+   live:  sitemap.xml, robots.txt som tillåter allt och en .htaccess som tvingar https och tar bort www (runlock.se utan www)."""
+import sys, os, shutil, datetime
+
+MODE = sys.argv[1] if len(sys.argv) > 1 else 'stage'
+SRC, DST, BASE = 'site', '_build', 'https://runlock.se/'
+shutil.rmtree(DST, ignore_errors=True)
+shutil.copytree(SRC, DST, ignore=shutil.ignore_patterns('.git*', '.DS_Store', 'Thumbs.db', 'desktop.ini', '_to_delete*'))
+pages = sorted(f for f in os.listdir(DST) if f.endswith('.html'))
+
+if MODE == 'stage':
+    for f in pages:
+        p = os.path.join(DST, f); s = open(p, encoding='utf-8').read()
+        s = s.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<meta name="robots" content="noindex, nofollow">', 1)
+        open(p, 'w', encoding='utf-8', newline='\n').write(s)
+    open(os.path.join(DST, 'robots.txt'), 'w', newline='\n').write('User-agent: *\nDisallow: /\n')
+    print(f'testbygge: {len(pages)} sidor med noindex')
+else:
+    today = datetime.date.today().isoformat()
+    urls = [BASE] + [BASE + f for f in pages if f != 'index.html']
+    xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'  <url><loc>{u}</loc><lastmod>{today}</lastmod></url>\n' for u in urls) + '</urlset>\n'
+    open(os.path.join(DST, 'sitemap.xml'), 'w', newline='\n').write(xml)
+    open(os.path.join(DST, 'robots.txt'), 'w', newline='\n').write(f'User-agent: *\nAllow: /\nSitemap: {BASE}sitemap.xml\n')
+    open(os.path.join(DST, '.htaccess'), 'w', newline='\n').write('''RewriteEngine On
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^www\\. [NC]
+RewriteRule ^ https://runlock.se%{REQUEST_URI} [L,R=301]
+AddDefaultCharset utf-8
+<IfModule mod_expires.c>
+ExpiresActive On
+ExpiresByType image/webp "access plus 30 days"
+ExpiresByType image/jpeg "access plus 30 days"
+ExpiresByType image/png "access plus 30 days"
+ExpiresByType video/mp4 "access plus 30 days"
+ExpiresByType video/webm "access plus 30 days"
+ExpiresByType text/css "access plus 7 days"
+ExpiresByType application/javascript "access plus 7 days"
+</IfModule>
+''')
+    print(f'lanseringsbygge: {len(urls)} adresser i sitemap.xml')

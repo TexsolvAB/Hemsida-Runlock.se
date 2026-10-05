@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The rope | RunLock</title>
+<meta name="description" content="How RunLock is made: two braided polyester strands joined at intervals into a rope of loops. Sizes, breaking strength, stretch, material, care, and why a loop holds without a knot.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="site.css">
+<style>
+.braid{background:#fff;border:1px solid var(--line);border-radius:8px;padding:clamp(12px,3vw,28px);overflow:hidden}
+.braid svg{width:100%;height:auto;display:block}
+.braid .rp .body,.braid .rp .thr{stroke-dasharray:1;stroke-dashoffset:1}
+.braid.on .rp .body,.braid.on .rp .thr{animation:draw 2.6s cubic-bezier(.3,.1,.3,1) forwards}
+.braid.on .rp .thr{animation-delay:.15s}
+.braid .rp .tw{opacity:0;transition:opacity .8s 2.4s}.braid.on .rp .tw{opacity:1}
+@keyframes draw{to{stroke-dashoffset:0}}
+.braid .lbl{font-family:var(--disp);font-weight:600;font-size:15px;letter-spacing:.08em;text-transform:uppercase;fill:var(--fg2);opacity:0;transition:opacity .6s 2.4s}
+.braid .lbl.red{fill:var(--red)}
+.braid.on .lbl{opacity:1}
+.braid .dim{stroke:var(--red);stroke-width:1.5;fill:none;opacity:0;transition:opacity .6s 2.4s}
+.braid.on .dim{opacity:1}
+@keyframes draw{to{stroke-dashoffset:0}}
+@media (prefers-reduced-motion:reduce){.braid .s{stroke-dashoffset:0;animation:none}.braid .lbl,.braid .dim{opacity:1;transition:none}}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.fact{background:#fff;border:1px solid var(--line);border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:8px}
+.fact b{font-family:var(--disp);font-weight:700;font-size:40px;line-height:1;color:var(--red);font-variant-numeric:tabular-nums}
+.fact span{font-family:var(--disp);font-weight:600;font-size:15px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg2)}
+.fact p{font-size:15px;color:var(--fg2)}
+/* sizes: six rope layers with hover */
+.ropes{display:grid;grid-template-columns:1.35fr .65fr;gap:24px;align-items:start}
+.stack{position:relative;background:radial-gradient(120% 90% at 50% 40%,#fff 0%,#f3f0eb 70%,#ebe7e1 100%);border:1px solid var(--line);border-radius:8px;padding:28px 28px 66px;overflow:hidden;box-shadow:inset 0 1px 0 #fff}
+.stack .glow{position:absolute;top:-4%;bottom:56px;width:30%;left:var(--x,4.3%);transform:translateX(-50%);pointer-events:none;background:radial-gradient(ellipse at 50% 55%,rgba(216,18,31,.16),rgba(216,18,31,.05) 45%,transparent 68%);transition:left .38s cubic-bezier(.2,.8,.2,1)}
+.stack .shadowbase{position:relative;opacity:0;pointer-events:none}
+.stack .layer{position:absolute;left:28px;right:28px;top:28px;width:calc(100% - 56px);height:auto;pointer-events:none;transition:opacity .3s,filter .3s,transform .3s cubic-bezier(.2,.8,.2,1)}
+.stack .layer:not(.on){opacity:.42;filter:saturate(.25) contrast(.95)}
+.stack .layer.hov:not(.on){opacity:.7;filter:saturate(.6)}
+.stack .layer.on{filter:drop-shadow(0 18px 18px rgba(21,23,26,.30)) drop-shadow(0 2px 4px rgba(21,23,26,.18)) brightness(1.04);transform:translateY(-12px);z-index:2}
+.stack{cursor:pointer}
+.stack .chips{position:absolute;left:28px;right:28px;bottom:16px;height:40px}
+.chips button{position:absolute;top:0;transform:translateX(-50%);min-height:38px;padding:0 15px;border-radius:999px;border:1.5px solid var(--line);background:rgba(255,255,255,.85);backdrop-filter:blur(4px);font-family:var(--disp);font-weight:700;font-size:16px;letter-spacing:.04em;cursor:pointer;color:var(--fg);transition:background .2s,color .2s,border-color .2s,transform .2s,box-shadow .2s}
+.chips button::before{content:"";position:absolute;left:50%;bottom:100%;width:0;height:0;margin-left:-6px;border:6px solid transparent;border-bottom-color:var(--red);opacity:0;transition:opacity .2s}
+.chips button:hover{border-color:var(--ink);transform:translateX(-50%) translateY(-2px)}
+.chips button[aria-pressed="true"]{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 6px 14px rgba(216,18,31,.3);transform:translateX(-50%) translateY(-2px)}
+.chips button[aria-pressed="true"]::before{opacity:1}
+.ropeinfo{background:linear-gradient(160deg,#1d2024,#121417);color:var(--fg-dark);border-radius:8px;padding:28px;display:flex;flex-direction:column;gap:18px;position:relative;overflow:hidden}
+.ropeinfo::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(216,18,31,.28),transparent 70%);pointer-events:none}
+.ropeinfo .rname{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;position:relative}
+.ropeinfo .rname b{display:block;font-family:var(--disp);font-weight:700;font-size:64px;line-height:.95;color:#fff;margin-top:6px}
+.ropeinfo .xsec{display:flex;flex-direction:column;align-items:center;gap:4px;font-family:var(--disp);font-weight:600;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-dark2)}
+.ropeinfo .xsec svg{width:76px;height:76px;overflow:visible}
+.ropeinfo .xsec circle{transition:r .35s cubic-bezier(.2,.8,.2,1)}
+.ropeinfo .loopviz{position:relative;padding-top:14px}
+.ropeinfo .loopviz svg{width:100%;height:auto;display:block;overflow:visible}
+.ropeinfo .loopviz path{fill:none;stroke-linecap:round;stroke-linejoin:round}
+.ropeinfo .loopviz .lb{position:absolute;right:0;top:0;font-family:var(--disp);font-weight:600;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-dark2)}
+.ropeinfo.swap dd,.ropeinfo.swap .rname b,.ropeinfo.swap #sp-u{animation:rise .32s cubic-bezier(.2,.8,.2,1)}
+@keyframes rise{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.ropeinfo .eyebrow{color:#ff6b74}
+.ropeinfo dl{margin:0;display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
+.ropeinfo dl div{border-top:1px solid var(--line-dark);padding-top:8px}
+.ropeinfo dt{font-family:var(--disp);font-weight:600;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--fg-dark2)}
+.ropeinfo dd{margin:2px 0 0;font-family:var(--disp);font-weight:700;font-size:26px;line-height:1;color:#fff;font-variant-numeric:tabular-nums}
+.ropeinfo p{color:var(--fg-dark2);font-size:16px}
+.ropeinfo .bars{display:flex;flex-direction:column;gap:8px}
+.ropeinfo .bars div{display:grid;grid-template-columns:80px 1fr;align-items:center;gap:10px;font-family:var(--disp);font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-dark2)}
+.ropeinfo .bars i{display:block;height:8px;border-radius:4px;background:rgba(255,255,255,.12);position:relative;overflow:hidden}
+.ropeinfo .bars i::after{content:"";position:absolute;left:0;top:0;bottom:0;width:var(--v,0%);background:var(--red);border-radius:4px;transition:width .35s}
+.ropeinfo .btn-ghost{color:#fff;align-self:flex-start}
+.ropeinfo .tested{font-size:14px;color:var(--fg-dark2)}
+/* stretch demo */
+.stretch{background:#fff;border:1px solid var(--line);border-radius:8px;padding:22px 24px 20px;user-select:none;touch-action:pan-y}
+.stretch .shead{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.ssel{display:flex;gap:4px;flex-wrap:wrap}
+.ssel button{min-height:30px;padding:0 10px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font-family:var(--disp);font-weight:700;font-size:14px;cursor:pointer;color:var(--fg)}
+.ssel button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.stretch .track{position:relative;aspect-ratio:1420/150}
+.stretch svg{position:absolute;inset:0;width:100%;height:100%}
+.stretch .knob{position:absolute;top:18%;left:var(--k,70.4%);width:34px;height:64%;margin-left:-4px;border-radius:7px;background:var(--red);cursor:grab;display:grid;place-items:center;color:#fff;font-family:var(--disp);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;transition:left .4s cubic-bezier(.2,1.5,.4,1);box-shadow:0 2px 8px rgba(0,0,0,.25);writing-mode:vertical-rl;transform:rotate(180deg)}
+.stretch.drag .knob{cursor:grabbing;transition:none}
+.stretch .reads{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:10px}
+.stretch .reads div{display:flex;flex-direction:column}
+.stretch .reads span{font-family:var(--disp);font-weight:600;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg2)}
+.stretch .reads b{font-family:var(--disp);font-weight:700;font-size:26px;line-height:1.05;font-variant-numeric:tabular-nums}
+.stretch .reads small{font-size:12px;color:var(--fg2)}
+.stretch .reads div:last-child b{color:var(--red)}
+.loadbar{height:8px;border-radius:4px;background:var(--paper2);margin-top:10px;overflow:hidden}
+.loadbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#e6ff3d,#ff6b1a 60%,var(--red));transition:width .4s cubic-bezier(.2,1.5,.4,1)}
+.stretch.drag .loadbar i{transition:none}
+.photos3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.photos3 figure{margin:0;border-radius:8px;overflow:hidden;background:#fff;border:1px solid var(--line)}
+.photos3 img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.photos3 figcaption{padding:12px 16px;font-size:14px;color:var(--fg2)}
+.chart{width:100%;height:auto;display:block;background:#fff;border:1px solid var(--line);border-radius:8px;margin-top:8px}
+.rtab td,.rtab th{font-size:15px}
+.care{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.care .card h3{font-size:22px}
+.care .card p{color:var(--fg2)}
+.report{background:var(--paper2);border-radius:8px;padding:24px;display:flex;flex-direction:column;gap:10px}
+@media (max-width:1000px){.facts{grid-template-columns:repeat(2,minmax(0,1fr))}.ropes{grid-template-columns:1fr}.care,.photos3{grid-template-columns:1fr}.stretch .reads{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:720px){.facts{grid-template-columns:1fr}.chips button{font-size:12px;padding:0 7px;min-height:32px}.stack{padding:14px 14px 52px}.stack .layer{left:14px;right:14px;top:14px;width:calc(100% - 28px)}.stack .chips{left:14px;right:14px}.ropeinfo .rname b{font-size:48px}}
+</style>
+</head>
+<body>
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="RunLock home"><img src="img/logo-red.png" alt="RunLock" width="254" height="88"></a>
+    <ul class="menu" id="menu">
+      <li><a href="index.html#how">How it works</a></li>
+      <li><a href="the-rope.html">The rope</a></li>
+      <li><a href="uses.html">Uses</a></li>
+      <li><a href="index.html#products">Products</a></li>
+      <li><a href="videos.html">Videos</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+    <a class="btn btn-red" href="https://texsolvshop.com/collections/runlock">Webshop</a>
+    <button class="burger" type="button" aria-label="Menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<script>(function(){if('scrollRestoration' in history)history.scrollRestoration='manual';if(!location.hash){var de=document.documentElement,sb=de.style.scrollBehavior;de.style.scrollBehavior='auto';window.scrollTo(0,0);setTimeout(function(){window.scrollTo(0,0);de.style.scrollBehavior=sb;},0);}var b=document.querySelector('.burger'),n=document.querySelector('.nav');if(!b)return;b.addEventListener('click',function(){var o=n.classList.toggle('open');b.setAttribute('aria-expanded',o?'true':'false');});n.querySelectorAll('.menu a').forEach(function(a){a.addEventListener('click',function(){n.classList.remove('open');b.setAttribute('aria-expanded','false');});});})();</script>
+
+<header class="phero white" style="background:#fff;color:var(--fg)">
+  <div class="wrap">
+    <div>
+      <div class="crumbs" style="color:var(--fg2)"><a href="index.html" style="color:var(--fg2)">Home</a><span>›</span><span>The rope</span></div>
+      <div class="eyebrow">The rope</div>
+      <h1 style="margin-top:14px;color:var(--fg)">A rope made of loops.</h1>
+      <p class="lead" style="color:var(--fg2)">RunLock is a braided polyester rope whose two halves are braided together at regular intervals and run free in between. Every free stretch is a loop. That is the whole idea, and everything the rope can do follows from it.</p>
+      <div class="cta"><a class="btn btn-red" href="#made">How it is made <span class="arr">→</span></a><a class="btn btn-ghost" href="#specs" style="color:var(--fg)">Specifications</a></div>
+    </div>
+    <img src="img/render4.webp" alt="A RunLock rope pulled through one of its own loops" width="1104" height="1393" style="width:100%;height:auto;max-height:520px;object-fit:contain">
+  </div>
+</header>
+
+<section class="sec" id="made">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">How it is made</div>
+      <h2>Two sides. Joined every few centimetres.</h2>
+      <p class="lead">The rope is braided from polyester threads in two groups, one for each side. The size number is the number of threads in each group: a No 4 has 4 + 4 threads, a No 20 has 20 + 20. Every thread is three yarns twisted together. On the braiding machine the two groups are braided through each other for a short stretch, then run apart, then braided together again. Each time they meet, the groups swap sides. The free stretch is the loop. The braided stretch is the join that carries the load.</p>
+    </div>
+    <div class="braid" id="braid">
+      <svg viewBox="0 0 1200 300" role="img" aria-label="Drawing of a RunLock rope: two bundles of threads that run apart into loops and are braided together at the joins, swapping sides each time">
+        <g class="rp"><path class="body" pathLength="1" d="M40,145 L104,155 L119,166 L135,175 L150,181 L166,185 L182,186 L198,185 L214,181 L229,175 L245,166 L260,155 L324,145 L339,134 L355,125 L370,119 L386,115 L402,114 L418,115 L434,119 L449,125 L465,134 L480,145 L544,155 L559,166 L575,175 L590,181 L606,185 L622,186 L638,185 L654,181 L669,175 L685,166 L700,155 L764,145 L779,134 L795,125 L810,119 L826,115 L842,114 L858,115 L874,119 L889,125 L905,134 L920,145 L984,155 L999,166 L1015,175 L1030,181 L1046,185 L1062,186 L1078,185 L1094,181 L1109,175 L1125,166 L1140,155 L1160,145" fill="none" stroke="#8a3204" stroke-width="19.4" stroke-linecap="round" stroke-linejoin="round"/><path class="body" pathLength="1" d="M40,155 L104,145 L119,134 L135,125 L150,119 L166,115 L182,114 L198,115 L214,119 L229,125 L245,134 L260,145 L324,155 L339,166 L355,175 L370,181 L386,185 L402,186 L418,185 L434,181 L449,175 L465,166 L480,155 L544,145 L559,134 L575,125 L590,119 L606,115 L622,114 L638,115 L654,119 L669,125 L685,134 L700,145 L764,155 L779,166 L795,175 L810,181 L826,185 L842,186 L858,185 L874,181 L889,175 L905,166 L920,155 L984,145 L999,134 L1015,125 L1030,119 L1046,115 L1062,114 L1078,115 L1094,119 L1109,125 L1125,134 L1140,145 L1160,155" fill="none" stroke="#8a3204" stroke-width="19.4" stroke-linecap="round" stroke-linejoin="round"/><path class="thr" pathLength="1" d="M41,137 L106,148 L123,160 L138,168 L152,174 L167,177 L182,179 L197,177 L212,174 L226,168 L241,160 L258,148 L322,138 L335,127 L352,118 L368,112 L385,108 L402,107 L419,108 L436,112 L452,118 L469,127 L482,138 L546,148 L563,160 L578,168 L592,174 L607,177 L622,179 L637,177 L652,174 L666,168 L681,160 L698,148 L762,138 L775,127 L792,118 L808,112 L825,108 L842,107 L859,108 L876,112 L892,118 L909,127 L922,138 L986,148 L1003,160 L1018,168 L1032,174 L1047,177 L1062,179 L1077,177 L1092,174 L1106,168 L1121,160 L1136,149 L1157,138" fill="none" stroke="#bd540a" stroke-width="2.23" stroke-linecap="round" stroke-linejoin="round"/><path class="thr" pathLength="1" d="M39,148 L102,138 L115,127 L132,118 L148,112 L165,108 L182,107 L199,108 L216,112 L232,118 L249,127 L262,138 L326,148 L343,160 L358,168 L372,174 L387,177 L402,179 L417,177 L432,174 L446,168 L461,160 L478,148 L542,138 L555,127 L572,118 L588,112 L605,108 L622,107 L639,108 L656,112 L672,118 L689,127 L702,138 L766,148 L783,160 L798,168 L812,174 L827,177 L842,179 L857,177 L872,174 L886,168 L901,160 L918,148 L982,138 L995,127 L1012,118 L1028,112 L1045,108 L1062,107 L1079,108 L1096,112 L1112,118 L1129,127 L1144,138 L1163,149" fill="none" stroke="#d56a1a" stroke-width="2.23" stroke-linecap="round" stroke-linejoin="round"/><path class="thr" pathLength="1" d="M41,140 L105,151 L122,162 L137,171 L152,176 L167,180 L182,181 L197,180 L212,176 L227,171 L242,162 L259,151 L323,140 L337,130 L353,121 L369,114 L385,111 L402,109 L419,111 L435,114 L451,121 L467,130 L481,140 L545,151 L562,162 L577,171 L592,176 L607,180 L622,181 L637,180 L652,176 L667,171 L682,162 L699,151 L763,140 L777,130 L793,121 L809,114 L825,111 L842,109 L859,111 L875,114 L891,121 L907,130 L921,140 L985,151 L1002,162 L1017,171 L1032,176 L1047,180 L1062,181 L1077,180 L1092,176 L1107,171 L1122,162 L1137,151 L1158,140" fill="none" stroke="#d15c0c" stroke-width="2.23" stroke-linecap="round" stroke-linejoin="round"/><path class="thr" pathLength="1" d="M39,151 L103,140 L117,130 L133,121 L149,114 L165,111 L182,109 L199,111 L215,114 L231,121 L247,130 L261,140 L325,151 L342,162 L357,171 L372,176 L387,180 L402,181 L417,180 L432,176 L447,171 L462,162 L479,151 L543,140 L557,130 L573,121 L589,114 L605,111 L622,109 L639,111 L655,114 L671,121 L687,130 L701,140 L765,151 L782,162 L797,171 L812,176 L827,180 L842,181 L857,180 L872,176 L887,171 L902,162 L919,151 L983,140 L997,130 L1013,121 L1029,114 L1045,111 L1062,109 L1079,111 L1095,114 L1111,121 L1127,130 L1143,140 L1162,151" fill="none" stroke="#eb751d" stroke-width="2.23" stroke-linecap="round" stroke-linejoin="round"/><path class="thr" pathLength="1" d="M40,142 L105,153 L120,164 L136,173 L151,179 L166,182 L182,183 L198,182 L213,179 L228,173 L244,164 L259,153 L323,142 L338,132 L354,123 L370,117 L386,113 L402,112 L418,113 L434,117 L450,123 L466,132 L481,142 L545,153 L560,164 L576,173 L591,179 L606,182 L622,183 L638,182 L653,179 L668,173 L684,164 L699,153 L763,142 L778,132 L794,123 L810,117 L826,113 L842,112 L858,113 L874,117 L890,123 L906,132 L921,142 L985,153 L1000,164 L1016,173 L1031,179 L1046,182 L1062,183 L1078,182 L1093,179 L1108,173 L1124,164 L1139,153 L1159,142" fill="none" stroke="#f96e0e" stroke-width="2.23" stroke-linecap="round" stroke-linejoin="round"/><path class="thr" pathLength="1" d="M40,153 L103,142 L118,132 L134,123 L150,117 L166,113 L182,112 L198,113 L214,117 L230,123 L246,132 L261,142 L325,153 L340,164 L356,173 L371,179 L386,182 L402,183 L418,182 L433,179 L448,173 L464,164 L479,153 L543,142 L558,132 L574,123 L590,117 L606,113 L622,112 L638,113 L654,117 L670,123 L686,132 L701,142 L765,153 L780,164 L796,173 L811,179 L826,182 L842,183 L858,182 L873,179 L888,173 L904,164 L919,153 L983,142 L998,132 L1014,123 L1030,117 L1046,113 L1062,112 L1078,113 L1094,117 L1110,123 L1126,132 L1141,142 L1161,153" fill="none" stroke="#ff8c22" stroke-width="2.23" stroke-linecap="round" stroke-linejoin="round"/><path class="thr" pathLength="1" d="M40,145 L104,155 L119,166 L135,175 L150,181 L166,185 L182,186 L198,185 L214,181 L229,175 L245,166 L260,155 L324,145 L339,134 L355,125 L370,119 L386,115 L402,114 L418,115 L434,119 L449,125 L465,134 L480,145 L544,155 L559,166 L575,175 L590,181 L606,185 L622,186 L638,185 L654,181 L669,175 L685,166 L700,155 L764,145 L779,134 L795,125 L810,119 L826,115 L842,114 L858,115 L874,119 L889,125 L905,134 L920,145 L984,155 L999,166 L1015,175 L1030,181 L1046,185 L1062,186 L1078,185 L1094,181 L1109,175 L1125,166 L1140,155 L1160,145" fill="none" stroke="#ef6a0d" stroke-width="2.23" stroke-linecap="round" stroke-linejoin="round"/><path class="thr" pathLength="1" d="M40,155 L104,145 L119,134 L135,125 L150,119 L166,115 L182,114 L198,115 L214,119 L229,125 L245,134 L260,145 L324,155 L339,166 L355,175 L370,181 L386,185 L402,186 L418,185 L434,181 L449,175 L465,166 L480,155 L544,145 L559,134 L575,125 L590,119 L606,115 L622,114 L638,115 L654,119 L669,125 L685,134 L700,145 L764,155 L779,166 L795,175 L810,181 L826,185 L842,186 L858,185 L874,181 L889,175 L905,166 L920,155 L984,145 L999,134 L1015,125 L1030,119 L1046,115 L1062,114 L1078,115 L1094,119 L1109,125 L1125,134 L1140,145 L1160,155" fill="none" stroke="#ff8621" stroke-width="2.23" stroke-linecap="round" stroke-linejoin="round"/><path class="thr" pathLength="1" d="M40,147 L103,158 L118,168 L134,177 L150,183 L166,187 L182,188 L198,187 L214,183 L230,177 L246,168 L261,158 L325,147 L340,136 L356,127 L371,121 L386,118 L402,117 L418,118 L433,121 L448,127 L464,136 L479,147 L543,158 L558,168 L574,177 L590,183 L606,187 L622,188 L638,187 L654,183 L670,177 L686,168 L701,158 L765,147 L780,136 L796,127 L811,121 L826,118 L842,117 L858,118 L873,121 L888,127 L904,136 L919,147 L983,158 L998,168 L1014,177 L1030,183 L1046,187 L1062,188 L1078,187 L1094,183 L1110,177 L1126,168 L1141,158 L1161,147" fill="none" stroke="#f96e0e" stroke-width="2.23" stroke-linecap="round" stroke-linejoin="round"/><path class="thr" pathLength="1" d="M40,158 L105,147 L120,136 L136,127 L151,121 L166,118 L182,117 L198,118 L213,121 L228,127 L244,136 L259,147 L323,158 L338,168 L354,177 L370,183 L386,187 L402,188 L418,187 L434,183 L450,177 L466,168 L481,158 L545,147 L560,136 L576,127 L591,121 L606,118 L622,117 L638,118 L653,121 L668,127 L684,136 L699,147 L763,158 L778,168 L794,177 L810,183 L826,187 L842,188 L858,187 L874,183 L890,177 L906,168 L921,158 L985,147 L1000,136 L1016,127 L1031,121 L1046,118 L1062,117 L1078,118 L1093,121 L1108,127 L1124,136 L1139,147 L1159,158" fill="none" stroke="#ff8c22" stroke-width="2.23" stroke-linecap="round" stroke-linejoin="round"/><path class="thr" pathLength="1" d="M39,149 L103,160 L117,170 L133,179 L149,186 L165,189 L182,191 L199,189 L215,186 L231,179 L247,170 L261,160 L325,149 L342,138 L357,129 L372,124 L387,120 L402,119 L417,120 L432,124 L447,129 L462,138 L479,149 L543,160 L557,170 L573,179 L589,186 L605,189 L622,191 L639,189 L655,186 L671,179 L687,170 L701,160 L765,149 L782,138 L797,129 L812,124 L827,120 L842,119 L857,120 L872,124 L887,129 L902,138 L919,149 L983,160 L997,170 L1013,179 L1029,186 L1045,189 L1062,191 L1079,189 L1095,186 L1111,179 L1127,170 L1143,160 L1162,149" fill="none" stroke="#d15c0c" stroke-width="2.23" stroke-linecap="round" stroke-linejoin="round"/><path class="thr" pathLength="1" d="M41,160 L105,149 L122,138 L137,129 L152,124 L167,120 L182,119 L197,120 L212,124 L227,129 L242,138 L259,149 L323,160 L337,170 L353,179 L369,186 L385,189 L402,191 L419,189 L435,186 L451,179 L467,170 L481,160 L545,149 L562,138 L577,129 L592,124 L607,120 L622,119 L637,120 L652,124 L667,129 L682,138 L699,149 L763,160 L777,170 L793,179 L809,186 L825,189 L842,191 L859,189 L875,186 L891,179 L907,170 L921,160 L985,149 L1002,138 L1017,129 L1032,124 L1047,120 L1062,119 L1077,120 L1092,124 L1107,129 L1122,138 L1137,149 L1158,160" fill="none" stroke="#eb751d" stroke-width="2.23" stroke-linecap="round" stroke-linejoin="round"/><path class="thr" pathLength="1" d="M39,152 L102,162 L115,173 L132,182 L148,188 L165,192 L182,193 L199,192 L216,188 L232,182 L249,173 L262,162 L326,152 L343,140 L358,132 L372,126 L387,123 L402,121 L417,123 L432,126 L446,132 L461,140 L478,152 L542,162 L555,173 L572,182 L588,188 L605,192 L622,193 L639,192 L656,188 L672,182 L689,173 L702,162 L766,152 L783,140 L798,132 L812,126 L827,123 L842,121 L857,123 L872,126 L886,132 L901,140 L918,152 L982,162 L995,173 L1012,182 L1028,188 L1045,192 L1062,193 L1079,192 L1096,188 L1112,182 L1129,173 L1144,162 L1163,151" fill="none" stroke="#bd540a" stroke-width="2.23" stroke-linecap="round" stroke-linejoin="round"/><path class="thr" pathLength="1" d="M41,163 L106,152 L123,140 L138,132 L152,126 L167,123 L182,121 L197,123 L212,126 L226,132 L241,140 L258,152 L322,162 L335,173 L352,182 L368,188 L385,192 L402,193 L419,192 L436,188 L452,182 L469,173 L482,162 L546,152 L563,140 L578,132 L592,126 L607,123 L622,121 L637,123 L652,126 L666,132 L681,140 L698,152 L762,162 L775,173 L792,182 L808,188 L825,192 L842,193 L859,192 L876,188 L892,182 L909,173 L922,162 L986,152 L1003,140 L1018,132 L1032,126 L1047,123 L1062,121 L1077,123 L1092,126 L1106,132 L1121,140 L1136,151 L1157,162" fill="none" stroke="#d56a1a" stroke-width="2.23" stroke-linecap="round" stroke-linejoin="round"/><path class="tw" d="M41,137 L106,148 L123,160 L138,168 L152,174 L167,177 L182,179 L197,177 L212,174 L226,168 L241,160 L258,148 L322,138 L335,127 L352,118 L368,112 L385,108 L402,107 L419,108 L436,112 L452,118 L469,127 L482,138 L546,148 L563,160 L578,168 L592,174 L607,177 L622,179 L637,177 L652,174 L666,168 L681,160 L698,148 L762,138 L775,127 L792,118 L808,112 L825,108 L842,107 L859,108 L876,112 L892,118 L909,127 L922,138 L986,148 L1003,160 L1018,168 L1032,174 L1047,177 L1062,179 L1077,177 L1092,174 L1106,168 L1121,160 L1136,149 L1157,138" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1.09" stroke-dasharray="2.7 3.9" stroke-dashoffset="0.0" stroke-linecap="round"/><path class="tw" d="M41,140 L105,151 L122,162 L137,171 L152,176 L167,180 L182,181 L197,180 L212,176 L227,171 L242,162 L259,151 L323,140 L337,130 L353,121 L369,114 L385,111 L402,109 L419,111 L435,114 L451,121 L467,130 L481,140 L545,151 L562,162 L577,171 L592,176 L607,180 L622,181 L637,180 L652,176 L667,171 L682,162 L699,151 L763,140 L777,130 L793,121 L809,114 L825,111 L842,109 L859,111 L875,114 L891,121 L907,130 L921,140 L985,151 L1002,162 L1017,171 L1032,176 L1047,180 L1062,181 L1077,180 L1092,176 L1107,171 L1122,162 L1137,151 L1158,140" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1.09" stroke-dasharray="2.7 3.9" stroke-dashoffset="2.2" stroke-linecap="round"/><path class="tw" d="M40,142 L105,153 L120,164 L136,173 L151,179 L166,182 L182,183 L198,182 L213,179 L228,173 L244,164 L259,153 L323,142 L338,132 L354,123 L370,117 L386,113 L402,112 L418,113 L434,117 L450,123 L466,132 L481,142 L545,153 L560,164 L576,173 L591,179 L606,182 L622,183 L638,182 L653,179 L668,173 L684,164 L699,153 L763,142 L778,132 L794,123 L810,117 L826,113 L842,112 L858,113 L874,117 L890,123 L906,132 L921,142 L985,153 L1000,164 L1016,173 L1031,179 L1046,182 L1062,183 L1078,182 L1093,179 L1108,173 L1124,164 L1139,153 L1159,142" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1.09" stroke-dasharray="2.7 3.9" stroke-dashoffset="4.4" stroke-linecap="round"/><path class="tw" d="M40,145 L104,155 L119,166 L135,175 L150,181 L166,185 L182,186 L198,185 L214,181 L229,175 L245,166 L260,155 L324,145 L339,134 L355,125 L370,119 L386,115 L402,114 L418,115 L434,119 L449,125 L465,134 L480,145 L544,155 L559,166 L575,175 L590,181 L606,185 L622,186 L638,185 L654,181 L669,175 L685,166 L700,155 L764,145 L779,134 L795,125 L810,119 L826,115 L842,114 L858,115 L874,119 L889,125 L905,134 L920,145 L984,155 L999,166 L1015,175 L1030,181 L1046,185 L1062,186 L1078,185 L1094,181 L1109,175 L1125,166 L1140,155 L1160,145" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1.09" stroke-dasharray="2.7 3.9" stroke-dashoffset="6.6" stroke-linecap="round"/><path class="tw" d="M40,147 L103,158 L118,168 L134,177 L150,183 L166,187 L182,188 L198,187 L214,183 L230,177 L246,168 L261,158 L325,147 L340,136 L356,127 L371,121 L386,118 L402,117 L418,118 L433,121 L448,127 L464,136 L479,147 L543,158 L558,168 L574,177 L590,183 L606,187 L622,188 L638,187 L654,183 L670,177 L686,168 L701,158 L765,147 L780,136 L796,127 L811,121 L826,118 L842,117 L858,118 L873,121 L888,127 L904,136 L919,147 L983,158 L998,168 L1014,177 L1030,183 L1046,187 L1062,188 L1078,187 L1094,183 L1110,177 L1126,168 L1141,158 L1161,147" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1.09" stroke-dasharray="2.7 3.9" stroke-dashoffset="8.7" stroke-linecap="round"/><path class="tw" d="M39,149 L103,160 L117,170 L133,179 L149,186 L165,189 L182,191 L199,189 L215,186 L231,179 L247,170 L261,160 L325,149 L342,138 L357,129 L372,124 L387,120 L402,119 L417,120 L432,124 L447,129 L462,138 L479,149 L543,160 L557,170 L573,179 L589,186 L605,189 L622,191 L639,189 L655,186 L671,179 L687,170 L701,160 L765,149 L782,138 L797,129 L812,124 L827,120 L842,119 L857,120 L872,124 L887,129 L902,138 L919,149 L983,160 L997,170 L1013,179 L1029,186 L1045,189 L1062,191 L1079,189 L1095,186 L1111,179 L1127,170 L1143,160 L1162,149" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1.09" stroke-dasharray="2.7 3.9" stroke-dashoffset="10.9" stroke-linecap="round"/><path class="tw" d="M39,152 L102,162 L115,173 L132,182 L148,188 L165,192 L182,193 L199,192 L216,188 L232,182 L249,173 L262,162 L326,152 L343,140 L358,132 L372,126 L387,123 L402,121 L417,123 L432,126 L446,132 L461,140 L478,152 L542,162 L555,173 L572,182 L588,188 L605,192 L622,193 L639,192 L656,188 L672,182 L689,173 L702,162 L766,152 L783,140 L798,132 L812,126 L827,123 L842,121 L857,123 L872,126 L886,132 L901,140 L918,152 L982,162 L995,173 L1012,182 L1028,188 L1045,192 L1062,193 L1079,192 L1096,188 L1112,182 L1129,173 L1144,162 L1163,151" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1.09" stroke-dasharray="2.7 3.9" stroke-dashoffset="13.1" stroke-linecap="round"/><path class="tw" d="M39,148 L102,138 L115,127 L132,118 L148,112 L165,108 L182,107 L199,108 L216,112 L232,118 L249,127 L262,138 L326,148 L343,160 L358,168 L372,174 L387,177 L402,179 L417,177 L432,174 L446,168 L461,160 L478,148 L542,138 L555,127 L572,118 L588,112 L605,108 L622,107 L639,108 L656,112 L672,118 L689,127 L702,138 L766,148 L783,160 L798,168 L812,174 L827,177 L842,179 L857,177 L872,174 L886,168 L901,160 L918,148 L982,138 L995,127 L1012,118 L1028,112 L1045,108 L1062,107 L1079,108 L1096,112 L1112,118 L1129,127 L1144,138 L1163,149" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1.09" stroke-dasharray="2.7 3.9" stroke-dashoffset="0.0" stroke-linecap="round"/><path class="tw" d="M39,151 L103,140 L117,130 L133,121 L149,114 L165,111 L182,109 L199,111 L215,114 L231,121 L247,130 L261,140 L325,151 L342,162 L357,171 L372,176 L387,180 L402,181 L417,180 L432,176 L447,171 L462,162 L479,151 L543,140 L557,130 L573,121 L589,114 L605,111 L622,109 L639,111 L655,114 L671,121 L687,130 L701,140 L765,151 L782,162 L797,171 L812,176 L827,180 L842,181 L857,180 L872,176 L887,171 L902,162 L919,151 L983,140 L997,130 L1013,121 L1029,114 L1045,111 L1062,109 L1079,111 L1095,114 L1111,121 L1127,130 L1143,140 L1162,151" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1.09" stroke-dasharray="2.7 3.9" stroke-dashoffset="2.2" stroke-linecap="round"/><path class="tw" d="M40,153 L103,142 L118,132 L134,123 L150,117 L166,113 L182,112 L198,113 L214,117 L230,123 L246,132 L261,142 L325,153 L340,164 L356,173 L371,179 L386,182 L402,183 L418,182 L433,179 L448,173 L464,164 L479,153 L543,142 L558,132 L574,123 L590,117 L606,113 L622,112 L638,113 L654,117 L670,123 L686,132 L701,142 L765,153 L780,164 L796,173 L811,179 L826,182 L842,183 L858,182 L873,179 L888,173 L904,164 L919,153 L983,142 L998,132 L1014,123 L1030,117 L1046,113 L1062,112 L1078,113 L1094,117 L1110,123 L1126,132 L1141,142 L1161,153" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1.09" stroke-dasharray="2.7 3.9" stroke-dashoffset="4.4" stroke-linecap="round"/><path class="tw" d="M40,155 L104,145 L119,134 L135,125 L150,119 L166,115 L182,114 L198,115 L214,119 L229,125 L245,134 L260,145 L324,155 L339,166 L355,175 L370,181 L386,185 L402,186 L418,185 L434,181 L449,175 L465,166 L480,155 L544,145 L559,134 L575,125 L590,119 L606,115 L622,114 L638,115 L654,119 L669,125 L685,134 L700,145 L764,155 L779,166 L795,175 L810,181 L826,185 L842,186 L858,185 L874,181 L889,175 L905,166 L920,155 L984,145 L999,134 L1015,125 L1030,119 L1046,115 L1062,114 L1078,115 L1094,119 L1109,125 L1125,134 L1140,145 L1160,155" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1.09" stroke-dasharray="2.7 3.9" stroke-dashoffset="6.6" stroke-linecap="round"/><path class="tw" d="M40,158 L105,147 L120,136 L136,127 L151,121 L166,118 L182,117 L198,118 L213,121 L228,127 L244,136 L259,147 L323,158 L338,168 L354,177 L370,183 L386,187 L402,188 L418,187 L434,183 L450,177 L466,168 L481,158 L545,147 L560,136 L576,127 L591,121 L606,118 L622,117 L638,118 L653,121 L668,127 L684,136 L699,147 L763,158 L778,168 L794,177 L810,183 L826,187 L842,188 L858,187 L874,183 L890,177 L906,168 L921,158 L985,147 L1000,136 L1016,127 L1031,121 L1046,118 L1062,117 L1078,118 L1093,121 L1108,127 L1124,136 L1139,147 L1159,158" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1.09" stroke-dasharray="2.7 3.9" stroke-dashoffset="8.7" stroke-linecap="round"/><path class="tw" d="M41,160 L105,149 L122,138 L137,129 L152,124 L167,120 L182,119 L197,120 L212,124 L227,129 L242,138 L259,149 L323,160 L337,170 L353,179 L369,186 L385,189 L402,191 L419,189 L435,186 L451,179 L467,170 L481,160 L545,149 L562,138 L577,129 L592,124 L607,120 L622,119 L637,120 L652,124 L667,129 L682,138 L699,149 L763,160 L777,170 L793,179 L809,186 L825,189 L842,191 L859,189 L875,186 L891,179 L907,170 L921,160 L985,149 L1002,138 L1017,129 L1032,124 L1047,120 L1062,119 L1077,120 L1092,124 L1107,129 L1122,138 L1137,149 L1158,160" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1.09" stroke-dasharray="2.7 3.9" stroke-dashoffset="10.9" stroke-linecap="round"/><path class="tw" d="M41,163 L106,152 L123,140 L138,132 L152,126 L167,123 L182,121 L197,123 L212,126 L226,132 L241,140 L258,152 L322,162 L335,173 L352,182 L368,188 L385,192 L402,193 L419,192 L436,188 L452,182 L469,173 L482,162 L546,152 L563,140 L578,132 L592,126 L607,123 L622,121 L637,123 L652,126 L666,132 L681,140 L698,152 L762,162 L775,173 L792,182 L808,188 L825,192 L842,193 L859,192 L876,188 L892,182 L909,173 L922,162 L986,152 L1003,140 L1018,132 L1032,126 L1047,123 L1062,121 L1077,123 L1092,126 L1106,132 L1121,140 L1136,151 L1157,162" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1.09" stroke-dasharray="2.7 3.9" stroke-dashoffset="13.1" stroke-linecap="round"/></g>
+        <g class="dim"><path d="M260,228 L480,228 M260,218 L260,238 M480,218 L480,238"></path></g>
+        <text class="lbl red" x="370" y="262" text-anchor="middle">One loop · 40–65 mm, join to join</text>
+        <text class="lbl" x="560" y="66" text-anchor="middle">Join · braided together, sides swap</text>
+        <text class="lbl" x="150" y="66" text-anchor="middle">Side A · 4–20 threads</text>
+        <text class="lbl" x="150" y="250" text-anchor="middle">Side B · 4–20 threads</text>
+        <text class="lbl" x="1160" y="262" text-anchor="end">… and so on, the whole length</text>
+      </svg>
+    </div>
+    <div class="facts" style="margin-top:20px">
+      <div class="fact"><b>8–40</b><span>Threads</span><p>The size number is the thread count per side: No 4 is 4 + 4 threads, No 20 is 20 + 20. Each thread is three twisted yarns.</p></div>
+      <div class="fact"><b>40–65 mm</b><span>Loop length</span><p>Shorter loops on the thin sizes, longer on the thick. The loop is where the rope goes through itself.</p></div>
+      <div class="fact"><b>100 %</b><span>Strength in every loop</span><p>There is no knot to weaken the rope. The braided join carries the full breaking strength, from the first loop to the last.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec white">
+  <div class="wrap two">
+    <div class="prose">
+      <div class="eyebrow">Why a loop holds</div>
+      <h2>No knot. Just the rope through itself.</h2>
+      <p>Every RunLock lock is the same move: the rope, or a fold of it, is pushed through one of its own loops. When the rope is loaded, the loop is pulled tight around the part that passes through it. The harder you pull, the harder it grips. Slack it off and the grip opens again, because nothing has been tied.</p>
+      <p>That is why the rope does not lose strength at the lock. A knot bends a rope sharply around itself, and the fibres on the outside of the bend carry far more than the fibres on the inside. RunLock loads the braided join, which is made to carry the load straight through. The four locks differ only in how the rope is led through the loop: sliding (the running loop), fixed (the fixed loop), locked but quick to release (the quick loop) or wrapped around an anchor (the securing lock).</p>
+      <p>Because the loops sit every few centimetres, every lock is adjustable in steps of one loop. Move the end one loop forward and the rope is one loop shorter. There is nothing to retie.</p>
+      <p><a class="btn btn-red" href="index.html#play">Try it yourself, on screen <span class="arr">→</span></a></p>
+      <h3>Joining two ropes</h3>
+      <p>Two RunLocks join loop to loop: pass the end of one through a loop of the other, then back through its own loop. The join holds like the rope itself and comes apart with one pull when the load is off. Join two No 16 to pull with more force, or a No 8 to a No 4 to reach a little further.</p>
+      <div class="lockrow" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+        <a class="lockc" href="videos.html#extend"><img src="video/use/extend.jpg" alt="" width="1280" height="720" loading="lazy"><b>Two ropes joined</b><span>Watch the join being made, and undone</span></a>
+        <a class="lockc" href="index.html#how"><img src="img/studio-hook.webp" alt="" width="900" height="675" loading="lazy"><b>The four locks</b><span>Running, fixed, quick and securing, step by step</span></a>
+      </div>
+    </div>
+    <div class="aside">
+      <div class="acard"><img src="img/strip-timber-wall.webp" alt="Yellow and blue RunLock joined on a timber wall" width="900" height="900" loading="lazy" style="border-radius:4px"><p class="muted" style="font-size:15px">A yellow and a blue RunLock joined loop to loop. The join carries the full strength of the thinner rope.</p></div>
+      <div class="acard"><img src="img/studio-hitch.webp" alt="RunLock running loop on a tow ball" width="900" height="675" loading="lazy" style="border-radius:4px"><p class="muted" style="font-size:15px">A running loop on a tow ball. The loop tightens under load and opens when the load is off.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="specs">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Specifications</div>
+      <h2>Six sizes, one construction.</h2>
+      <p class="lead">The number is the size. Diameter, loop length, strength and stretch all grow with it. Point at a rope, or tap it.</p>
+    </div>
+    <div class="ropes" id="ropes">
+      <div class="stack">
+        <div class="glow" id="sglow"></div>
+        <div class="shadowbase"><img src="img/render1.webp" alt="" width="1800" height="823" aria-hidden="true"></div>
+        <img class="layer" data-i="0" src="img/sizes/no4.webp" alt="No 4" width="1800" height="823">
+        <img class="layer" data-i="1" src="img/sizes/no6.webp" alt="No 6" width="1800" height="823">
+        <img class="layer" data-i="2" src="img/sizes/no8.webp" alt="No 8" width="1800" height="823">
+        <img class="layer" data-i="3" src="img/sizes/no12.webp" alt="No 12" width="1800" height="823">
+        <img class="layer" data-i="4" src="img/sizes/no16.webp" alt="No 16" width="1800" height="823">
+        <img class="layer" data-i="5" src="img/sizes/no20.webp" alt="No 20" width="1800" height="823">
+        <div class="chips" aria-label="Sizes"><button type="button" data-i="0" style="left:4.3%" aria-pressed="true">No 4</button><button type="button" data-i="1" style="left:19.6%" aria-pressed="false">No 6</button><button type="button" data-i="2" style="left:35.4%" aria-pressed="false">No 8</button><button type="button" data-i="3" style="left:50.2%" aria-pressed="false">No 12</button><button type="button" data-i="4" style="left:65.4%" aria-pressed="false">No 16</button><button type="button" data-i="5" style="left:82.5%" aria-pressed="false">No 20</button></div>
+      </div>
+      <div class="ropeinfo" id="ropeinfo" aria-live="polite">
+        <div class="rname"><div><span class="eyebrow">Size</span><b id="sp-n">No 4</b></div>
+          <div class="xsec" aria-hidden="true"><svg viewBox="0 0 76 76"><circle cx="38" cy="38" r="36" fill="none" stroke="rgba(255,255,255,.14)" stroke-dasharray="3 4"/><circle id="sp-circ" cx="38" cy="38" r="12" fill="var(--red)"/></svg><span>Cross-section, to scale</span></div>
+        </div>
+        <div class="loopviz" aria-hidden="true"><span class="lb" id="sp-lb">Loop 40 mm</span><svg id="sp-loopsvg" viewBox="-2 0 204 40"></svg></div>
+        <dl>
+          <div><dt>Diameter</dt><dd id="sp-d">4 mm</dd></div>
+          <div><dt>Loop length</dt><dd id="sp-l">40 mm</dd></div>
+          <div><dt>Breaking strength</dt><dd id="sp-s">170 kg</dd></div>
+          <div><dt>Tested at SP</dt><dd id="sp-t">209 kg</dd></div>
+          <div><dt>Stretch at break</dt><dd id="sp-e">20.8 %</dd></div>
+          <div><dt>Weight</dt><dd id="sp-w">13 g/m</dd></div>
+        </dl>
+        <p id="sp-u">The thin one. Washing lines, tent lines, hanging gear and clothes in the camp. 7 m weighs less than 100 g.</p>
+        <p class="tested">The rating is set with a margin below the breaking force measured at SP in 2016 (report 6P01208).</p>
+        <div class="bars">
+          <div><span>Strength</span><i style="--v:24%"></i></div>
+          <div><span>Stretch</span><i style="--v:83%"></i></div>
+          <div><span>Weight</span><i style="--v:18%"></i></div>
+        </div>
+        <a class="btn btn-ghost" id="sp-link" href="bulk-roll.html">Bulk roll No 4 <span class="arr">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="sec white">
+  <div class="wrap">
+    <div class="prose" style="max-width:70ch">
+      <div class="eyebrow">Strength and load</div>
+      <h2>Tested at SP, rated with a margin.</h2>
+      <p>Every size has been pull-tested at SP, the Swedish national testing institute: a new rope, loaded in a straight pull until it breaks. The No 20 held 843 kg before it broke. We rate it at 700 kg, and every size gets its rating the same way, well below the force it actually held.</p>
+      <p>The rating is the strength of the rope, not the load to work it at every day. Tying down and pulling means jerks, wet rope and corners, so pick a size with strength to spare. For towing, that is the No 20 and a gentle start: the stretch in the rope smooths the pull out.</p>
+      <p>RunLock is a rope for pulling, tying down, hanging and leading. It is not a lifting sling or a climbing rope, and it is not certified for lifting loads over people.</p>
+      <h3>Stretch</h3>
+      <p>Every size stretches by a fifth to a quarter of its length before it breaks, 21 to 25 % in the SP test, and springs back when the load is off. In a towing line that stretch is what turns a jerk into a pull: the rope takes up the first metre of movement gently instead of passing the shock straight into the two cars. In a tie-down it is what keeps the load tight: the rope is slightly stretched when you lock it, and it keeps pulling as the load settles.</p>
+    </div>
+  </div>
+  <div class="wrap" style="margin-top:32px">
+<div class="stretch" id="stretch">
+        <div class="shead"><div class="eyebrow">Try the stretch, to scale</div><div class="ssel" role="tablist" aria-label="Size"><button type="button" data-i="0">No 4</button><button type="button" data-i="1">No 6</button><button type="button" data-i="2">No 8</button><button type="button" data-i="3">No 12</button><button type="button" data-i="4">No 16</button><button type="button" data-i="5" aria-pressed="true">No 20</button></div></div>
+        <div class="track" id="strack">
+          <svg id="ssvg" viewBox="0 0 1420 150" preserveAspectRatio="none" aria-hidden="true">
+            <g id="ruler"></g>
+            <rect x="0" y="40" width="12" height="60" rx="2" fill="#15171a"></rect>
+            <path id="sr1" fill="none" stroke="#ff6b1a" stroke-width="7" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+            <path id="sr2" fill="none" stroke="#d94f00" stroke-width="7" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+          </svg>
+          <div class="knob" id="knob" role="slider" tabindex="0" aria-label="Pull the rope" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">Pull</div>
+        </div>
+        <div class="reads">
+          <div><span>Rope</span><b>1.00 m</b></div>
+          <div><span>Stretched to</span><b id="rd-len">1.00 m</b></div>
+          <div><span>Stretch</span><b id="rd-pct">0 %</b></div>
+          <div><span>Load</span><b id="rd-kg">0 kg</b><small id="rd-of">of 700 kg</small></div>
+        </div>
+        <div class="loadbar"><i id="loadfill"></i></div>
+        <p class="note" style="margin-top:8px">One metre of rope drawn to scale with its real loop length, on a centimetre ruler. Drag the handle to the right and let go. The rope gives easily at first and then stiffens, so the handle falls behind your hand the harder you pull, and the load climbs towards the breaking force measured at SP for that size without ever quite reaching it. Treat it as an illustration, not a measurement.</p>
+      </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Material</div>
+      <h2>Polyester, because it behaves.</h2>
+      <p class="lead">RunLock is 100 % polyester, chosen for how little it changes with weather, water and time.</p>
+    </div>
+    <div class="grid3">
+      <div class="card"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/></svg></div><h3>Water</h3><p>Polyester takes up almost no water. The rope does not swell, does not get heavy and does not stiffen when wet, and it keeps its strength wet or dry. It does not float.</p></div>
+      <div class="card"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="3.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3 3l1.5 1.5M11.5 11.5L13 13M3 13l1.5-1.5M11.5 4.5L13 3"/><path d="M17 13v8M14 15l3 1.5 3-1.5M14 19l3-1.5 3 1.5"/></svg></div><h3>Sun and cold</h3><p>Good resistance to UV light, so the rope can live outdoors. The fibre keeps its flexibility in the cold, and a frozen RunLock still releases with one pull.</p></div>
+      <div class="card"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 10h9l4 3v7H6z"/><path d="M9 10V7h3v3"/><path d="M19 13l2-4"/></svg></div><h3>Oil, fuel and salt</h3><p>Strong resistance to petroleum products, salt water and most everyday chemicals. Hang it in the garage, keep it in the boat.</p></div>
+      <div class="card"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3 1-6 1-9z"/></svg></div><h3>Heat</h3><p>Polyester melts at roughly 250 °C. That is what lets you seal a cut end with a lighter, and why the rope should be kept away from exhausts and open fire.</p></div>
+      <div class="card"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg></div><h3>Wear</h3><p>The braid is tight and smooth, so the rope runs through its own loops without fraying. Sharp edges are the enemy of any rope: pad them, or take the load on a fixed loop instead of a sliding one.</p></div>
+      <div class="card"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 12V6a2 2 0 0 1 4 0v6M12 8a2 2 0 0 1 4 0v4M16 10a2 2 0 0 1 4 0v5a6 6 0 0 1-6 6h-2a6 6 0 0 1-6-6v-3a2 2 0 0 1 4 0"/></svg></div><h3>Soft on things</h3><p>No hooks, no chains, no ratchets. The rope will not scratch paint, dent a canoe or rattle in the forest, and it is comfortable to pull by hand.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec white" style="padding-top:0">
+  <div class="wrap">
+    <div class="photos3">
+      <figure><img src="img/strip-dock-ring.webp" alt="Yellow RunLock on a rusty mooring ring" width="900" height="900" loading="lazy"><figcaption>Salt water and rust do nothing to it.</figcaption></figure>
+      <figure><img src="img/strip-atv-rack.webp" alt="Orange RunLock on a quad rack in the mud" width="900" height="900" loading="lazy"><figcaption>Mud today, washing machine tonight.</figcaption></figure>
+      <figure><img src="img/strip-camp.webp" alt="RunLock line in a forest camp" width="900" height="900" loading="lazy"><figcaption>Sun, rain and resin, season after season.</figcaption></figure>
+    </div>
+  </div>
+</section>
+<section class="sec white" id="care">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="eyebrow">Care</div>
+      <h2>Cut it, wash it, keep it.</h2>
+    </div>
+    <div class="care">
+      <div class="card"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.5 7.5L20 19M8.5 16.5L20 5"/></svg></div><h3>Cutting to length</h3><p>Cut in the middle of a loop, across both strands. Then melt each cut end briefly with a lighter and press the two strands together, so the end is sealed in one piece and the last join holds. A cut length is a complete tool: no eye to splice, no hardware to fit.</p></div>
+      <div class="card"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="12" cy="13" r="5"/><path d="M7 6h.01M10 6h.01"/><path d="M8.5 13c1.5-1.5 3.5 1.5 5 0s2 0 2 0"/></svg></div><h3>Washing</h3><p>Machine wash at 40 °C, without fabric softener. Let it dry hanging. Mud, salt and resin all come out, and the colours stay.</p></div>
+      <div class="card"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="M14.5 14.5L21 21"/><path d="M8 10h4"/></svg></div><h3>Inspection</h3><p>Before a heavy pull, run the rope through your hands. Look for cut strands, a join that has come open, melted or glazed patches and loops that have stretched out of shape. A rope that has taken a real shock load or shows damage is retired to lighter work.</p></div>
+      <div class="card"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8l9-5 9 5v10l-9 5-9-5z"/><path d="M3 8l9 5 9-5M12 13v10"/></svg></div><h3>Storage</h3><p>Coil it loosely and hang it dry. The rope tolerates sun, but a rope kept in the dark lasts longer than one left on the dashboard for years. Keep it away from sharp tools in the toolbox.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="wrap two">
+    <div class="prose">
+      <div class="eyebrow">Tested and trusted</div>
+      <h2>From the forests of Dalsland.</h2>
+      <p>RunLock was born in 1983, when the founder of Texsolv needed a flexible, reliable rope for everything from pulling game out of the forest to hanging tools in the workshop. He took the loop idea from the Texsolv heddle cord that the factory had made for hand looms since 1977, and gave it a stronger braid and built-in stretch.</p>
+      <p>Since then the same factory in Tösse has braided every metre. The breaking strengths were tested by SP, now RISE, the Swedish research institute, and RunLock has been supplied to armed forces, police and professionals as well as to hunters, boat owners, farmers and dog people around the world.</p>
+      <div class="report">
+        <div class="eyebrow">Test report</div>
+        <h3 style="margin:6px 0 4px">Tensile test at SP, Borås, January 2016</h3>
+        <p>Six new ropes, 2 m long, one of each size, were pulled to breaking in a tensile testing machine at SP Structural and Solid Mechanics in Borås (now part of RISE). Each rope was fixed with 16.4 mm shackles, pre-loaded to 0.1 kN, and then loaded at a constant 50 mm/min until it broke. Every rope broke at the loop, not in the braid. Measurement uncertainty for the breaking force is below 1 %.</p>
+        <div class="tablewrap"><table class="rtab">
+          <tr><th>Size</th><th>Breaking force</th><th>Elongation at break</th><th>Published rating</th></tr>
+          <tr><td class="no">No 4</td><td>2.05 kN · 209 kg</td><td>20.8 %</td><td>170 kg</td></tr>
+          <tr><td class="no">No 6</td><td>2.93 kN · 299 kg</td><td>21.3 %</td><td>230 kg</td></tr>
+          <tr><td class="no">No 8</td><td>3.44 kN · 351 kg</td><td>22.3 %</td><td>290 kg</td></tr>
+          <tr><td class="no">No 12</td><td>4.80 kN · 489 kg</td><td>22.1 %</td><td>480 kg</td></tr>
+          <tr><td class="no">No 16</td><td>6.30 kN · 642 kg</td><td>22.5 %</td><td>580 kg</td></tr>
+          <tr><td class="no">No 20</td><td>8.27 kN · 843 kg</td><td>25.0 %</td><td>700 kg</td></tr>
+        </table></div>
+        <p class="muted" style="font-size:15px">The published ratings are set below the test results on purpose: one rope of each size was tested, and the rating leaves room for the spread between ropes. The elongation figures are the stretch at the moment of breaking, measured over the whole test length including the end loops.</p>
+        <svg class="chart" viewBox="0 0 760 420" role="img" aria-label="Force against elongation for the six sizes, ending at the measured breaking force: No 4 209 kg at 20.8 %, No 6 299 kg at 21.3 %, No 8 351 kg at 22.3 %, No 12 489 kg at 22.1 %, No 16 642 kg at 22.5 %, No 20 843 kg at 25.0 %">
+<style>.g{stroke:rgba(21,23,26,.1)}.ax{font:500 12px Barlow,sans-serif;fill:#615b5c}.lb{font:700 13px "Barlow Condensed",sans-serif;letter-spacing:.03em}.al{font:600 12px "Barlow Condensed",sans-serif;letter-spacing:.12em;fill:#615b5c;text-transform:uppercase}</style>
+<line x1="62.0" y1="20" x2="62.0" y2="368" class="g"/><text x="62.0" y="388" class="ax" text-anchor="middle">0</text><line x1="126.2" y1="20" x2="126.2" y2="368" class="g"/><text x="126.2" y="388" class="ax" text-anchor="middle">3</text><line x1="190.4" y1="20" x2="190.4" y2="368" class="g"/><text x="190.4" y="388" class="ax" text-anchor="middle">6</text><line x1="254.7" y1="20" x2="254.7" y2="368" class="g"/><text x="254.7" y="388" class="ax" text-anchor="middle">9</text><line x1="318.9" y1="20" x2="318.9" y2="368" class="g"/><text x="318.9" y="388" class="ax" text-anchor="middle">12</text><line x1="383.1" y1="20" x2="383.1" y2="368" class="g"/><text x="383.1" y="388" class="ax" text-anchor="middle">15</text><line x1="447.3" y1="20" x2="447.3" y2="368" class="g"/><text x="447.3" y="388" class="ax" text-anchor="middle">18</text><line x1="511.6" y1="20" x2="511.6" y2="368" class="g"/><text x="511.6" y="388" class="ax" text-anchor="middle">21</text><line x1="575.8" y1="20" x2="575.8" y2="368" class="g"/><text x="575.8" y="388" class="ax" text-anchor="middle">24</text><line x1="62" y1="368.0" x2="640" y2="368.0" class="g"/><text x="54" y="372.0" class="ax" text-anchor="end">0</text><line x1="62" y1="329.3" x2="640" y2="329.3" class="g"/><text x="54" y="333.3" class="ax" text-anchor="end">1</text><line x1="62" y1="290.7" x2="640" y2="290.7" class="g"/><text x="54" y="294.7" class="ax" text-anchor="end">2</text><line x1="62" y1="252.0" x2="640" y2="252.0" class="g"/><text x="54" y="256.0" class="ax" text-anchor="end">3</text><line x1="62" y1="213.3" x2="640" y2="213.3" class="g"/><text x="54" y="217.3" class="ax" text-anchor="end">4</text><line x1="62" y1="174.7" x2="640" y2="174.7" class="g"/><text x="54" y="178.7" class="ax" text-anchor="end">5</text><line x1="62" y1="136.0" x2="640" y2="136.0" class="g"/><text x="54" y="140.0" class="ax" text-anchor="end">6</text><line x1="62" y1="97.3" x2="640" y2="97.3" class="g"/><text x="54" y="101.3" class="ax" text-anchor="end">7</text><line x1="62" y1="58.7" x2="640" y2="58.7" class="g"/><text x="54" y="62.7" class="ax" text-anchor="end">8</text><line x1="62" y1="20.0" x2="640" y2="20.0" class="g"/><text x="54" y="24.0" class="ax" text-anchor="end">9</text><line x1="62" y1="20" x2="62" y2="368" stroke="#15171a" stroke-width="1.5"/><line x1="62" y1="368" x2="640" y2="368" stroke="#15171a" stroke-width="1.5"/>
+<text x="351" y="412" class="al" text-anchor="middle">Elongation, %</text><text x="14" y="194" class="al" text-anchor="middle" transform="rotate(-90 14 194)">Force, kN</text>
+<polyline points="62.0,368.0 73.1,367.9 84.3,367.5 95.4,367.0 106.5,366.4 117.7,365.7 128.8,364.8 139.9,363.9 151.1,362.9 162.2,361.7 173.3,360.5 184.5,359.2 195.6,357.8 206.7,356.3 217.8,354.7 229.0,353.0 240.1,351.3 251.2,349.5 262.4,347.6 273.5,345.6 284.6,343.6 295.8,341.5 306.9,339.3 318.0,337.1 329.2,334.7 340.3,332.3 351.4,329.9 362.6,327.4 373.7,324.8 384.8,322.1 396.0,319.4 407.1,316.6 418.2,313.8 429.4,310.8 440.5,307.9 451.6,304.8 462.7,301.7 473.9,298.6 485.0,295.4 496.1,292.1 507.3,288.7" fill="none" stroke="#c9c3bd" stroke-width="2.5" stroke-linecap="round"/><circle cx="507.3" cy="288.7" r="5" fill="#c9c3bd" stroke="#fff" stroke-width="2"/><text x="516.3" y="292.7" class="lb" fill="#c9c3bd">No 4 · 209 kg</text><polyline points="62.0,368.0 73.4,367.8 84.8,367.3 96.2,366.6 107.6,365.7 119.0,364.7 130.4,363.5 141.8,362.1 153.2,360.7 164.6,359.0 176.0,357.3 187.4,355.4 198.8,353.4 210.2,351.2 221.6,349.0 233.0,346.6 244.4,344.1 255.8,341.5 267.2,338.8 278.6,336.0 290.0,333.1 301.4,330.1 312.8,327.0 324.2,323.8 335.6,320.5 347.0,317.0 358.4,313.5 369.8,309.9 381.2,306.2 392.6,302.4 404.0,298.5 415.4,294.5 426.8,290.5 438.2,286.3 449.6,282.1 461.0,277.7 472.4,273.3 483.8,268.8 495.2,264.2 506.6,259.5 518.0,254.7" fill="none" stroke="#a8a39a" stroke-width="2.5" stroke-linecap="round"/><circle cx="518.0" cy="254.7" r="5" fill="#a8a39a" stroke="#fff" stroke-width="2"/><text x="527.0" y="258.7" class="lb" fill="#a8a39a">No 6 · 299 kg</text><polyline points="62.0,368.0 73.9,367.7 85.9,367.2 97.8,366.4 109.7,365.3 121.7,364.1 133.6,362.7 145.5,361.1 157.5,359.4 169.4,357.5 181.3,355.4 193.3,353.2 205.2,350.8 217.2,348.3 229.1,345.7 241.0,342.9 253.0,340.0 264.9,336.9 276.8,333.8 288.8,330.5 300.7,327.1 312.6,323.5 324.6,319.9 336.5,316.1 348.4,312.2 360.4,308.2 372.3,304.0 384.2,299.8 396.2,295.5 408.1,291.0 420.0,286.4 432.0,281.8 443.9,277.0 455.8,272.1 467.8,267.1 479.7,262.0 491.6,256.8 503.6,251.5 515.5,246.1 527.5,240.6 539.4,235.0" fill="none" stroke="#7f8c9c" stroke-width="2.5" stroke-linecap="round"/><circle cx="539.4" cy="235.0" r="5" fill="#7f8c9c" stroke="#fff" stroke-width="2"/><text x="548.4" y="239.0" class="lb" fill="#7f8c9c">No 8 · 351 kg</text><polyline points="62.0,368.0 73.8,367.6 85.7,366.9 97.5,365.7 109.3,364.3 121.1,362.6 133.0,360.6 144.8,358.4 156.6,356.0 168.4,353.3 180.3,350.4 192.1,347.3 203.9,344.0 215.8,340.5 227.6,336.8 239.4,333.0 251.2,328.9 263.1,324.7 274.9,320.2 286.7,315.6 298.6,310.9 310.4,305.9 322.2,300.8 334.0,295.6 345.9,290.1 357.7,284.5 369.5,278.8 381.3,272.9 393.2,266.8 405.0,260.6 416.8,254.2 428.7,247.7 440.5,241.0 452.3,234.2 464.1,227.2 476.0,220.1 487.8,212.8 499.6,205.4 511.4,197.9 523.3,190.2 535.1,182.4" fill="none" stroke="#1d5f8f" stroke-width="2.5" stroke-linecap="round"/><circle cx="535.1" cy="182.4" r="5" fill="#1d5f8f" stroke="#fff" stroke-width="2"/><text x="544.1" y="186.4" class="lb" fill="#1d5f8f">No 12 · 489 kg</text><polyline points="62.0,368.0 74.0,367.5 86.1,366.5 98.1,365.0 110.2,363.1 122.2,360.9 134.2,358.3 146.3,355.4 158.3,352.2 170.4,348.7 182.4,344.9 194.5,340.9 206.5,336.5 218.5,332.0 230.6,327.1 242.6,322.0 254.7,316.7 266.7,311.1 278.8,305.3 290.8,299.3 302.8,293.0 314.9,286.5 326.9,279.8 339.0,272.9 351.0,265.8 363.0,258.4 375.1,250.9 387.1,243.1 399.2,235.2 411.2,227.0 423.2,218.6 435.3,210.1 447.3,201.3 459.4,192.3 471.4,183.2 483.5,173.9 495.5,164.3 507.5,154.6 519.6,144.7 531.6,134.7 543.7,124.4" fill="none" stroke="#d94f00" stroke-width="2.5" stroke-linecap="round"/><circle cx="543.7" cy="124.4" r="5" fill="#d94f00" stroke="#fff" stroke-width="2"/><text x="552.7" y="128.4" class="lb" fill="#d94f00">No 16 · 642 kg</text><polyline points="62.0,368.0 75.4,367.4 88.8,366.0 102.1,364.1 115.5,361.6 128.9,358.7 142.3,355.3 155.7,351.5 169.0,347.3 182.4,342.7 195.8,337.7 209.2,332.4 222.6,326.7 235.9,320.7 249.3,314.3 262.7,307.6 276.1,300.6 289.5,293.3 302.8,285.7 316.2,277.8 329.6,269.6 343.0,261.1 356.4,252.3 369.7,243.2 383.1,233.8 396.5,224.2 409.9,214.3 423.2,204.1 436.6,193.6 450.0,182.9 463.4,171.9 476.8,160.7 490.1,149.2 503.5,137.4 516.9,125.4 530.3,113.2 543.7,100.7 557.0,87.9 570.4,74.9 583.8,61.7 597.2,48.2" fill="none" stroke="#d8121f" stroke-width="2.5" stroke-linecap="round"/><circle cx="597.2" cy="48.2" r="5" fill="#d8121f" stroke="#fff" stroke-width="2"/><text x="606.2" y="52.2" class="lb" fill="#d8121f">No 20 · 843 kg</text></svg>
+        <p class="muted" style="font-size:14px">Force against elongation, one curve per size. The end points are the measured breaking force and elongation from the report; the shape of the curves is redrawn after the report's diagrams, which show the rope stiffening as the load grows.</p>
+        <div><a class="btn btn-ghost" href="docs/RunLock-tensile-test-SP-6P01208.pdf">Read the report (PDF, 1.2 MB) <span class="arr">→</span></a></div>
+      </div>
+    </div>
+    <div class="aside">
+      <div class="acard red"><h3>Get the rope</h3><p>Pro packs, sets and bulk rope, shipped worldwide from Sweden. Larger orders: <a href="bulk-roll.html#custom" style="color:#fff">made to your spec →</a></p><a class="btn" href="https://texsolvshop.com/collections/runlock">Shop RunLock <span class="arr">→</span></a></div>
+      <div class="acard"><h3>Read next</h3><ul><li><a href="index.html#how">How it works: the four locks →</a></li><li><a href="pro-pack.html">Pro pack 10 m →</a></li><li><a href="towing-line.html">Towing line →</a></li><li><a href="index.html#products">All products →</a></li></ul></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <a class="brand" href="index.html" aria-label="RunLock home"><img src="img/logo-white.png" alt="RunLock" width="254" height="88"></a>
+      <p style="margin-top:16px;max-width:320px">Much more than just a rope. Made by Texsolv AB in Tösse, Sweden.</p>
+    </div>
+    <div><h4>Products</h4><ul><li><a href="index.html#products">Sets</a></li><li><a href="pro-pack.html">Pro pack and bulk rolls</a></li><li><a href="the-rope.html#specs">Sizes and colours</a></li><li><a href="https://texsolvshop.com/collections/runlock">Webshop</a></li></ul></div>
+    <div><h4>Learn</h4><ul><li><a href="the-rope.html">The rope</a></li><li><a href="uses.html">Uses</a></li><li><a href="videos.html">Videos</a></li><li><a href="running-loop.html">Running loop</a></li><li><a href="fixed-loop.html">Fixed loop</a></li><li><a href="quick-loop.html">Quick loop</a></li><li><a href="securing-lock.html">Securing lock</a></li></ul></div>
+    <div><h4>Company</h4><ul><li><a href="uses.html">Uses</a></li><li><a href="index.html#contact">Contact</a></li><li><a href="https://texsolv.se/">texsolv.se</a></li><li><a href="https://texsolv.se/privacy/">Privacy</a></li></ul></div>
+    <div class="copy"><span>© 2026 Texsolv AB. All rights reserved.</span><span>Company reg. no. 556311-9816 · Registered office: Åmål, Sweden</span></div>
+  </div>
+</footer>
+<script>
+(function(){
+  var b=document.getElementById('braid');
+  if('IntersectionObserver' in window){var io=new IntersectionObserver(function(es){if(es.some(function(e){return e.isIntersecting})){b.classList.add('on');io.disconnect();}},{threshold:.4});io.observe(b);}else{b.classList.add('on');}
+
+  /* sizes: name, diameter, loop, rated kg, stretch %, g/m, use text, tested kg, tested elongation %, loop mm, diameter mm */
+  var S=[['No 4','4 mm','40 mm','170 kg','21 %','13 g/m','The thin one. Washing lines, tent lines, hanging gear and clothes in the camp. 7 m weighs less than 100 g.',209,20.8,40,4],
+         ['No 6','5 mm','45 mm','230 kg','21 %','20 g/m','Leashes, camp and boat lines, and the light tie-down that lives in the jacket pocket.',299,21.3,45,5],
+         ['No 8','6 mm','45 mm','290 kg','22 %','28 g/m','The all-round size. Cargo on the trailer, the bike on the rack, the canoe on the roof. The size in the pre-cut box.',351,22.3,45,6],
+         ['No 12','8 mm','50 mm','480 kg','22 %','43 g/m','Heavier tie-downs and dragging, and the rope for pulling by hand.',489,22.1,50,8],
+         ['No 16','10 mm','60 mm','580 kg','23 %','57 g/m','The hunting rope. Dragging game, lifting, pulling by hand with a body loop.',642,22.5,60,10],
+         ['No 20','12 mm','65 mm','700 kg','25 %','73 g/m','The towing line. Heavy dragging, towing and recovery, snowmobiles and 4x4.',843,25.0,65,12]];
+  var stack=document.querySelector('#ropes .stack'),layers=stack.querySelectorAll('.layer'),chips=stack.querySelectorAll('.chips button'),sel=0;
+  var ids=['sp-n','sp-d','sp-l','sp-s',null,'sp-w','sp-u'],card=document.getElementById('ropeinfo'),glow=document.getElementById('sglow');
+  function info(i){var d=S[i];ids.forEach(function(id,k){if(id)document.getElementById(id).textContent=d[k]});
+    document.getElementById('sp-t').textContent=d[7]+' kg';document.getElementById('sp-e').textContent=d[8]+' %';
+    var bars=document.querySelectorAll('#ropeinfo .bars i');bars[0].style.setProperty('--v',(d[7]/843*100)+'%');bars[1].style.setProperty('--v',(d[8]/25*100)+'%');bars[2].style.setProperty('--v',(parseInt(d[5])/73*100)+'%');
+    document.getElementById('sp-circ').setAttribute('r',d[10]*3);
+    /* loop drawing to scale: 1 unit = 1 mm, 20 cm of rope, drawn as the two bundles of threads that cross in every join */
+    document.getElementById('sp-loopsvg').innerHTML=ropeSvg(0,200,20,d[9],Math.max(8,d[9]*.28),Math.min(13,d[10]*1.05),d[10],Math.min(6,Math.max(3,Math.round(d[10]/2))));
+    document.getElementById('sp-lb').textContent='Loop '+d[9]+' mm · 20 cm of rope, to scale';
+    var l=document.getElementById('sp-link');l.textContent='Bulk roll '+d[0]+' \u2192';
+    card.classList.remove('swap');void card.offsetWidth;card.classList.add('swap');}
+  var lefts=[4.3,19.6,35.4,50.2,65.4,82.5];
+  function ropeSvg(x0,x1,y,loop,join,amp,width,threads){
+    function bez(p0,p1,p2,p3){var o=[];for(var i=0;i<=8;i++){var t=i/8,u=1-t;o.push([u*u*u*p0[0]+3*u*u*t*p1[0]+3*u*t*t*p2[0]+t*t*t*p3[0],u*u*u*p0[1]+3*u*u*t*p1[1]+3*u*t*t*p2[1]+t*t*t*p3[1]]);}return o;}
+    var off=width*.32,A=[],B=[],x=x0,side=1;
+    while(x<x1-1e-6){var jx=Math.min(x1,x+join),e=Math.min(x1,x+loop);var sA=[[x,y+side*off],[jx,y-side*off]],sB=[[x,y-side*off],[jx,y+side*off]];
+      if(e>jx){var w=e-jx;sA=sA.concat(bez([jx,y-side*off],[jx+w*.32,y-side*amp],[e-w*.32,y-side*amp],[e,y-side*off]).slice(1));sB=sB.concat(bez([jx,y+side*off],[jx+w*.32,y+side*amp],[e-w*.32,y+side*amp],[e,y+side*off]).slice(1));}
+      A=A.length?A.concat(sA.slice(1)):sA;B=B.length?B.concat(sB.slice(1)):sB;x=e;side=-side;}
+    function offs(poly,d){var o=[];for(var i=0;i<poly.length;i++){var a=poly[Math.max(0,i-1)],b=poly[Math.min(poly.length-1,i+1)],tx=b[0]-a[0],ty=b[1]-a[1],L=Math.hypot(tx,ty)||1;o.push([poly[i][0]-ty/L*d,poly[i][1]+tx/L*d]);}return o;}
+    function path(poly){return 'M'+poly.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1)}).join(' L');}
+    function shade(hex,k){var n=parseInt(hex.slice(1),16),r=(n>>16)&255,g=(n>>8)&255,b=n&255,f=function(v){return Math.max(0,Math.min(255,Math.round(v*k)))};return 'rgb('+f(r)+','+f(g)+','+f(b)+')';}
+    function bundle(poly,base){var tw=width/threads,body='<path d="'+path(poly)+'" stroke="#8a3204" stroke-width="'+(width+1.2).toFixed(2)+'"/>',thr=[];
+      for(var i=0;i<threads;i++){var d=-width/2+tw*(i+.5),rel=Math.abs(d)/(width/2),k=1.18-0.42*rel*rel-(i%2?0.08:0);thr.push('<path d="'+path(offs(poly,d))+'" stroke="'+shade(base,k)+'" stroke-width="'+(tw*.92).toFixed(2)+'"/>');}
+      return {body:body,thr:thr};}
+    var bA=bundle(A,'#f47a1e'),bB=bundle(B,'#d9600c'),out=bB.body+bA.body;
+    for(var i=0;i<threads;i++)out+=bB.thr[i]+bA.thr[i];
+    return out;}
+  function hi(i){if(i===sel&&stack.dataset.init)return;sel=i;stack.dataset.init=1;layers.forEach(function(L,k){L.classList.toggle('on',k===i)});chips.forEach(function(c,k){c.setAttribute('aria-pressed',k===i?'true':'false')});glow.style.setProperty('--x',lefts[i]+'%');info(i);}
+  function bind(el){var i=+el.dataset.i;el.addEventListener('mouseenter',function(){hi(i)});el.addEventListener('click',function(){hi(i)});el.addEventListener('focus',function(){hi(i)});}
+  chips.forEach(bind);hi(0);
+  /* the rope pictures overlap, so the nearest rope to the pointer is picked by position: each rope leans right going up */
+  var base=stack.querySelector('.shadowbase');
+  function nearestRope(e){var r=base.getBoundingClientRect();if(!r.width)return -1;var fx=(e.clientX-r.left)/r.width,fy=(e.clientY-r.top)/r.height;if(fy<-0.05||fy>1.05)return -1;var best=-1,bd=1;for(var k=0;k<lefts.length;k++){var cx=lefts[k]/100+0.17*(1-fy)-0.02;var d=Math.abs(fx-cx);if(d<bd){bd=d;best=k;}}return bd<0.09?best:-1;}
+  stack.addEventListener('mousemove',function(e){if(e.target.closest('.chips'))return;var k=nearestRope(e);layers.forEach(function(L,i){L.classList.toggle('hov',i===k&&k!==sel)});if(k>=0)hi(k);});
+  stack.addEventListener('click',function(e){if(e.target.closest('.chips'))return;var k=nearestRope(e);if(k>=0)hi(k);});
+
+  /* stretch, to scale: 1 m of rope on a cm ruler. Force follows the SP curves: F = Fmax * (e/emax)^1.7 */
+  var st=document.getElementById('stretch'),knob=document.getElementById('knob'),track=document.getElementById('strack'),svg=document.getElementById('ssvg'),ruler=document.getElementById('ruler'),r1=document.getElementById('sr1'),r2=document.getElementById('sr2');
+  var VB=1420,X0=12,LEN=1000,TRAVEL=640,size=5,cur=0,pull=0,drag=false,x0=0;   /* a short drag reaches the top, even on a phone */
+  var rl='';for(var c=0;c<=130;c+=10){var x=X0+c*10;rl+='<line x1="'+x+'" y1="112" x2="'+x+'" y2="'+(c%50===0?126:120)+'" stroke="#15171a" stroke-width="'+(c%50===0?2:1)+'"/>';if(c%50===0)rl+='<text x="'+x+'" y="144" font-family="Barlow Condensed,sans-serif" font-weight="600" font-size="15" fill="#615b5c" text-anchor="middle">'+c+' cm</text>';for(var m=1;m<10&&c<130;m++)rl+='<line x1="'+(x+m*10)+'" y1="112" x2="'+(x+m*10)+'" y2="'+(m===5?119:116)+'" stroke="#15171a" stroke-width="1" opacity=".5"/>';}
+  ruler.innerHTML=rl+'<line x1="'+X0+'" y1="112" x2="'+(X0+1310)+'" y2="112" stroke="#15171a" stroke-width="1.5"/>';
+  function rope(e){var d=S[size],p=d[9],L=LEN*(1+e),n=Math.max(2,Math.round(LEN/p)),seg=L/n,amp=Math.min(14,4+d[10]*1.1);var a='M'+X0+',70',b='M'+X0+',70';
+    for(var k=0;k<n;k++){var xs=X0+k*seg,xe=X0+(k+1)*seg,xm=(xs+xe)/2;a+=' C'+(xs+seg*.3)+','+(70-amp)+' '+(xe-seg*.3)+','+(70-amp)+' '+xe+',70';b+=' C'+(xs+seg*.3)+','+(70+amp)+' '+(xe-seg*.3)+','+(70+amp)+' '+xe+',70';}
+    r1.setAttribute('d',a);r2.setAttribute('d',b);var w=4+d[10]*.5;r1.setAttribute('stroke-width',w);r2.setAttribute('stroke-width',w);}
+  /* pull = how far you have dragged, in drag lengths. The rope gives easily at first and then stiffens: e = emax*(1-exp(-3.6*pull)), never reaching the breaking point */
+  function set(u){var d=S[size],emax=d[8]/100;pull=Math.max(0,u);cur=emax*(1-Math.exp(-3.6*pull));rope(cur);
+    var endx=(X0+LEN*(1+cur))/VB*100;st.style.setProperty('--k',endx+'%');
+    var kg=Math.round(d[7]*Math.pow(cur/emax,1.7));
+    document.getElementById('rd-len').textContent=(1+cur).toFixed(2)+' m';document.getElementById('rd-pct').textContent=(cur*100).toFixed(1)+' %';
+    document.getElementById('rd-kg').textContent=kg+' kg';document.getElementById('rd-of').textContent='of '+d[7]+' kg (SP test)';
+    document.getElementById('loadfill').style.width=(kg/d[7]*100)+'%';knob.setAttribute('aria-valuenow',Math.round(cur/emax*100));}
+  function px(){return track.clientWidth/VB;}
+  function down(e){drag=true;st.classList.add('drag');x0=(e.touches?e.touches[0].clientX:e.clientX)-pull*TRAVEL*px();e.preventDefault();}
+  function move(e){if(!drag)return;var x=(e.touches?e.touches[0].clientX:e.clientX);set((x-x0)/(TRAVEL*px()));}
+  function up(){if(!drag)return;drag=false;st.classList.remove('drag');set(0);}
+  knob.addEventListener('mousedown',down);knob.addEventListener('touchstart',down,{passive:false});
+  window.addEventListener('mousemove',move);window.addEventListener('touchmove',move,{passive:true});
+  window.addEventListener('mouseup',up);window.addEventListener('touchend',up);
+  knob.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){set(pull+0.05);e.preventDefault();}if(e.key==='ArrowLeft'){set(pull-0.05);e.preventDefault();}if(e.key==='Escape'||e.key==='Enter'){set(0);}});
+  document.querySelectorAll('.ssel button').forEach(function(bt){bt.addEventListener('click',function(){size=+bt.dataset.i;document.querySelectorAll('.ssel button').forEach(function(x){x.setAttribute('aria-pressed',x===bt?'true':'false')});set(0);});});
+  set(0);
+})();
+</script>
+</body>
+</html>

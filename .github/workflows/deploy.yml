@@ -1,0 +1,53 @@
+name: Deploy to Oderland
+# Samma strömbrytare som för texsolv.se: repovariabeln LIVE (Settings > Secrets and variables > Actions > Variables).
+#
+#   Alltid:                  staging -> STAGE_DIR (testbygge med noindex; mappen är testdomänens Document Root i cPanel)
+#   LIVE saknas/false (nu):  main    -> laddas inte upp alls
+#   LIVE = true (lansering): main    -> runlock.se/   (lanseringsbygge: sitemap, robots, .htaccess med https och utan www)
+#
+# FTP-kontot är samma som för texsolv.se (Directory /home/texsolv, kontots rot); katalogerna anges relativt den.
+# Uppgifterna ligger i Secrets: FTP_SERVER, FTP_USERNAME, FTP_PASSWORD.
+on:
+  push:
+    branches: [main, staging]
+    paths: ["site/**", "tools/**", ".github/workflows/deploy.yml"]
+  workflow_dispatch:
+concurrency:
+  group: deploy-${{ github.ref_name }}
+  cancel-in-progress: false
+env:
+  STAGE_DIR: ny.runlock.se/
+  LIVE_DIR: runlock.se/
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref_name != 'main' || vars.LIVE == 'true'
+    env:
+      MODE: ${{ (github.ref_name == 'main' && vars.LIVE == 'true') && 'live' || 'stage' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build (stage = noindex, live = sitemap + .htaccess)
+        run: |
+          python tools/build.py "$MODE"
+          if [ "$MODE" = "live" ]; then echo "SERVER_DIR=$LIVE_DIR" >> "$GITHUB_ENV"; else echo "SERVER_DIR=$STAGE_DIR" >> "$GITHUB_ENV"; fi
+      - name: Show target
+        run: echo "Target: $SERVER_DIR ($MODE)"
+      - name: Upload changed files via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          local-dir: ./_build/
+          server-dir: ${{ env.SERVER_DIR }}
+          state-name: .ftp-deploy-sync-state.json
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.DS_Store
+            **/Thumbs.db

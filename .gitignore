@@ -1,0 +1,10 @@
+.DS_Store
+Thumbs.db
+desktop.ini
+*.tmp
+~$*
+__pycache__/
+*.pyc
+_build/
+_to_delete/
+_to_delete_incoming/

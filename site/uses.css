@@ -1,0 +1,26 @@
+
+.sizelist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.sizelist li{display:flex;flex-direction:column;gap:2px;padding:10px 12px;border:1px solid var(--line);border-radius:6px}
+.sizelist b{font-family:var(--disp);font-weight:700;font-size:20px;line-height:1}
+.sizelist span{font-size:15px;color:var(--fg2)}
+.vgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.vid{margin:0;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;display:flex;flex-direction:column}
+.vid video{width:100%;aspect-ratio:16/9;background:#111;display:block;object-fit:cover}
+.vid figcaption{padding:14px 16px 18px;display:flex;flex-direction:column;gap:4px}
+.vid b{font-family:var(--disp);font-weight:700;font-size:20px;line-height:1.05;text-transform:uppercase}
+.vid span{font-size:14px;color:var(--fg2)}
+.vgroup{margin-bottom:clamp(36px,5vw,56px)}
+.vgroup h2{font-size:34px;margin-bottom:18px}
+.photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:20px}
+.photos figure{margin:0;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.photos img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.photos figcaption{padding:12px 16px;font-size:14px;color:var(--fg2)}
+.ugrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.ucard{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;text-decoration:none;color:var(--fg);transition:transform .2s,border-color .2s}
+.ucard:hover{transform:translateY(-3px);border-color:var(--ink);color:var(--fg)}
+.ucard img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.ucard div{padding:18px 20px 22px;display:flex;flex-direction:column;gap:6px}
+.ucard b{font-family:var(--disp);font-weight:700;font-size:26px;line-height:1;text-transform:uppercase}
+.ucard span{font-size:15px;color:var(--fg2)}
+@media (max-width:1000px){.vgrid,.photos,.ugrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:720px){.vgrid,.photos,.ugrid{grid-template-columns:1fr}}

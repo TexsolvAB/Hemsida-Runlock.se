@@ -1,0 +1,56 @@
+/* Try it: the loose rope */
+.rope{display:grid;grid-template-columns:1.7fr .75fr;gap:24px;align-items:stretch}
+.rope .tstage{position:relative;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#f3f0eb;box-shadow:0 1px 0 #fff inset;min-height:640px}
+.rope .tstage{display:flex;flex-direction:column}
+.rope canvas{position:absolute;inset:0;display:block;width:100%;height:100%;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+.rope .tstage .tcap{position:relative;z-index:2;margin-top:auto}
+.rope canvas.grab{cursor:grabbing}
+.rope .tpanel{background:radial-gradient(circle at calc(100% + 50px) calc(100% + 50px),rgba(216,18,31,.26),transparent 120px),linear-gradient(160deg,#1d2024,#121417);color:var(--fg-dark);border-radius:8px;padding:26px;display:flex;flex-direction:column;gap:16px;position:relative;overflow:hidden;min-height:640px;box-sizing:border-box}
+.rope .tpanel .eyebrow{color:#ff6b74}
+.rope .tpanel h3{font-family:var(--disp);font-weight:700;font-size:28px;line-height:1.05;text-transform:uppercase;color:#fff;margin:6px 0 0}
+.rope .trow .tshow{background:var(--red);border-color:var(--red)}
+.rope.demo canvas{cursor:default}
+.rope .tring{position:absolute;z-index:3;width:64px;height:64px;margin:-32px 0 0 -32px;pointer-events:none;transition:transform .2s}
+.rope .tring svg{display:block;width:100%;height:100%;overflow:visible}
+.rope .tring .pulse{fill:none;stroke:rgba(216,18,31,.5);stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:center}
+.rope .tring.wait .pulse{animation:tpulse 1.3s ease-out infinite}
+.rope .tring .track{fill:none;stroke:rgba(255,255,255,.9);stroke-width:3}
+.rope .tring .bar{fill:none;stroke:var(--red);stroke-width:3;stroke-linecap:round;stroke-dasharray:100;stroke-dashoffset:100;transform:rotate(-90deg);transform-box:fill-box;transform-origin:center;transition:stroke-dashoffset .12s linear}
+.rope .tring .tick{fill:none;stroke:#2f8f6f;stroke-width:3.5;filter:drop-shadow(0 0 2px #fff) drop-shadow(0 0 2px #fff);stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:40;stroke-dashoffset:40;transition:stroke-dashoffset .35s ease-out .1s}
+.rope .tring.hold{transform:scale(1.12)}
+.rope .tring.hold .track{stroke:rgba(255,255,255,.55);filter:drop-shadow(0 0 5px rgba(216,18,31,.5))}
+.rope .tring.done .bar{stroke:#2f8f6f}
+.rope .tring.done .track{stroke:#2f8f6f;filter:drop-shadow(0 0 5px rgba(47,143,111,.5))}
+.rope .tring.done .tick{stroke-dashoffset:0}
+.rope .tring[hidden]{display:none}
+.rope .thand{position:absolute;z-index:3;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;pointer-events:none;background:rgba(216,18,31,.8);border:2.5px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,.3)}
+.rope .thand::after{content:"";position:absolute;left:9px;top:-13px;width:7px;height:15px;border-radius:4px;background:#fff}
+.rope .thand[hidden]{display:none}
+@keyframes tpulse{0%{transform:scale(.9);opacity:.9}100%{transform:scale(1.7);opacity:0}}
+@keyframes tspin{to{transform:rotate(360deg)}}
+.rope .tmsg{font-size:16px;line-height:1.42;color:#fff;padding:12px 14px;border-left:3px solid var(--red);background:rgba(255,255,255,.05);border-radius:0 6px 6px 0}
+/* the message boxes hold every text they can show, invisibly, so they never change height */
+.rope .tmsg,.rope .tcap-msg{display:grid}.rope .tmsg>span,.rope .tcap-msg>span{grid-area:1/1}.rope .tmsg .ghost,.rope .tcap-msg .ghost{visibility:hidden}
+.rope .trow{display:flex;gap:10px;flex-wrap:wrap;position:relative}
+.rope .trow button{min-height:44px;padding:0 18px;border-radius:4px;border:2px solid rgba(255,255,255,.35);background:transparent;color:#fff;font-family:var(--disp);font-weight:700;font-size:17px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.rope .trow button:hover{border-color:#fff}
+.rope .trow button[hidden]{display:none}
+.rope .tlist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.rope .tlist li{font-size:14px;line-height:1.42;color:var(--fg-dark2);padding-left:12px;border-left:2px solid rgba(255,255,255,.14)}
+.rope .tlist li b{color:#fff;font-weight:700}
+.rope .tcol{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;color:var(--fg-dark2)}
+.rope .tdots{display:flex;gap:8px}
+.rope .tdots button{width:24px;height:24px;border-radius:50%;border:2px solid rgba(255,255,255,.35);background:var(--c);cursor:pointer;padding:0;transition:transform .15s,border-color .15s}
+.rope .tdots button:hover{transform:scale(1.12);border-color:#fff}
+.rope .tdots button[aria-pressed="true"]{border-color:#fff;box-shadow:0 0 0 2px var(--red)}
+.rope .thint{font-size:13px;color:var(--fg-dark2)}
+.rope .tcap{display:none;align-items:flex-start;gap:8px;padding:10px 12px;background:#fff;border-top:1px solid var(--line);font-size:14px;line-height:1.35;color:var(--fg)}
+.rope .tcap .tcap-msg{flex:1}
+.rope .tcap .tcap-btns{flex:none;display:flex;gap:6px}
+.rope .tcap button{flex:none;min-height:30px;padding:0 10px;border-radius:4px;border:1.5px solid var(--ink);background:#fff;color:var(--ink);font-family:var(--disp);font-weight:700;font-size:13px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+.rope:fullscreen{background:var(--paper2);padding:24px;gap:24px;grid-template-columns:1fr 380px;height:100vh;box-sizing:border-box;overflow:auto}
+.rope:fullscreen .tstage{min-height:0;height:calc(100vh - 48px)}
+.rope:fullscreen .tpanel{overflow:hidden;height:calc(100vh - 48px)}
+@media (max-width:1100px){.rope{grid-template-columns:1fr}.rope .tpanel{padding:22px;height:auto;min-height:0;overflow:hidden}.rope .tstage{min-height:0;height:auto;align-self:start;aspect-ratio:auto}.rope canvas{position:relative;inset:auto;display:block;width:100%;height:auto;aspect-ratio:900/560}.rope .tcap{display:flex}}
+@media (max-width:1100px){.rope:fullscreen{grid-template-columns:1fr;grid-template-rows:1fr auto}.rope:fullscreen .tstage{height:auto;min-height:0;aspect-ratio:auto}}
+@media (max-width:640px){.rope .tstage{aspect-ratio:auto;min-height:0;height:auto;align-self:start}.rope canvas{position:relative;inset:auto;display:block;width:100%;height:auto;aspect-ratio:3/4;cursor:default}}
