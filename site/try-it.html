@@ -3,16 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Securing lock | RunLock</title>
-<meta name="description" content="How to make a RunLock securing lock for tying down cargo: over the load, around the anchor and locked on itself without a knot. Step-by-step pictures and 3D animation.">
+<title>Try it: a RunLock rope in 3D | RunLock</title>
+<meta name="description" content="Play with a RunLock rope on screen: drag it, push it through its own loops, hang it on hooks and a ring, and watch a loop lock on the rope with real physics.">
 <link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="rope.css">
 <!-- head:common -->
-<link rel="canonical" href="https://runlock.se/securing-lock.html">
+<link rel="canonical" href="https://runlock.se/try-it.html">
 <link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="icon" href="favicon.png" type="image/png" sizes="32x32"><link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#d8121f">
-<meta property="og:title" content="Securing lock | RunLock"><meta property="og:description" content="How to make a RunLock securing lock for tying down cargo: over the load, around the anchor and locked on itself without a knot. Step-by-step pictures and 3D animation."><meta property="og:image" content="https://runlock.se/img/strip-pickup.webp"><meta property="og:url" content="https://runlock.se/securing-lock.html"><meta property="og:type" content="website"><meta property="og:site_name" content="RunLock"><meta property="og:locale" content="en_GB"><meta name="twitter:card" content="summary_large_image">
+<meta property="og:title" content="Try it: a RunLock rope in 3D | RunLock"><meta property="og:description" content="Play with a RunLock rope on screen: drag it, push it through its own loops, hang it on hooks and a ring, and watch a loop lock on the rope with real physics."><meta property="og:image" content="https://runlock.se/img/header4.webp"><meta property="og:url" content="https://runlock.se/try-it.html"><meta property="og:type" content="website"><meta property="og:site_name" content="RunLock"><meta property="og:locale" content="en_GB"><meta name="twitter:card" content="summary_large_image">
 <link rel="preload" href="fonts/barlow-condensed-700.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
-<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://runlock.se/"}, {"@type": "ListItem", "position": 2, "name": "How it works", "item": "https://runlock.se/how-it-works.html"}, {"@type": "ListItem", "position": 3, "name": "Securing lock"}]}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Home", "item": "https://runlock.se/"}, {"@type": "ListItem", "position": 2, "name": "Try it"}]}]}</script>
 <script>
 /* Google Analytics only after consent (Consent Mode). The choice is kept in the browser. */
 window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
@@ -45,48 +46,36 @@ window.rlShowConsent=function(){var b=document.getElementById('cb');if(b)b.hidde
   </div>
   <div class="search" id="search" hidden><div class="wrap"><form role="search" class="sform"><input type="search" id="q" placeholder="Search: towing, No 8, washing line, stretch…" aria-label="Search the site" autocomplete="off"><button type="button" class="sclose" aria-label="Close search">×</button></form><div class="sres" id="sres" aria-live="polite"></div></div></div>
 </nav>
-
 <header class="phero solo">
-  <div class="bg"><img src="img/strip-pickup.webp" alt="" width="900" height="900"></div>
-  <div class="wrap">
-    <div style="max-width:680px">
-      <div class="crumbs"><a href="index.html">Home</a><span>›</span><a href="how-it-works.html">How it works</a><span>›</span><span>Securing lock</span></div>
-      <div class="eyebrow">How it works</div>
-      <h1 style="margin-top:14px">The securing lock.</h1>
-      <p class="lead">For tying down cargo and anything that must not creep. The rope goes over the load, around the anchor and locks on itself, with the built-in stretch keeping it tight.</p>
-      <div class="cta"><a class="btn btn-red" href="#play">Watch the steps <span class="arr">→</span></a><a class="btn btn-ghost" href="https://texsolvshop.com/collections/runlock">Shop RunLock</a></div>
-    </div>
-  </div>
+  <div class="bg"><img src="img/header4.webp" alt="" width="1800" height="1000" fetchpriority="high"></div>
+  <div class="wrap"><div style="max-width:760px"><div class="crumbs"><a href="index.html">Home</a><span>›</span><span>Try it</span></div><div class="eyebrow">Try it</div><h1 style="margin-top:14px">A loose rope. Do what you like.</h1><p class="lead">A rope of loops hanging from a clamp, with real physics: two strands that part in every loop, so every loop is a hole, and a rope that cannot pass through itself. Drag any part of it. Hold still over a loop, or over the ring, and the part you hold is pushed through; hold a loop still over a hook and it goes on the hook. Pull, and a loop closes on the rope, just like the real one.</p><div class="cta"><a class="btn btn-ghost" href="how-it-works.html">The four locks, step by step</a></div></div></div>
 </header>
 <section class="sec white" id="play">
-  <div class="wrap how-wrap"><div class="lockblock" style="border-top:0;padding-top:0">
-      <div class="player" data-times="3.2,7.4,13,17,21.2" data-dur="24">
-        <video muted playsinline preload="auto" poster="video/lock1.webp" aria-label="Securing lock, 3D animation"><source src="video/lock1.mp4" type="video/mp4"><source src="video/lock1.webm" type="video/webm"></video>
-        <div class="bar"><div class="marks"></div><input type="range" class="scrub" min="0" max="24" step="0.02" value="0" aria-label="Position in the animation"></div>
-        <div class="ctrl"><button type="button" class="b-prev">‹ Prev</button><button type="button" class="b-play">Play step 1</button><button type="button" class="b-next">Next ›</button><button type="button" class="b-slow" aria-pressed="false">Slow</button><button type="button" class="b-all">Play all</button></div>
-      </div>
-      <div><div class="num">Step by step</div><h3>5 steps. No knot.</h3><p class="blurb">The animation plays one step at a time and pauses. Click a step to jump to it, drag the slider to go back and forth, or play the whole sequence.</p><ol class="plist"><li><button type="button"><span>Run the rope over the load and around the anchor, and bring the end back to the rope.</span></button></li><li><button type="button"><span>Push the end through one of the rope’s loops.</span></button></li><li><button type="button"><span>Pull it through.</span></button></li><li><button type="button"><span>Take the end around and through once more.</span></button></li><li><button type="button"><span>Pull tight. It holds the load and releases without a knot to pick apart.</span></button></li></ol></div>
-    </div></div>
-</section>
-<section class="sec" id="steps">
-  <div class="wrap two">
-    <div>
-      <div class="sec-head"><div class="eyebrow">Pictures</div><h2>Every step, frame by frame.</h2></div>
-      <div class="stepgrid"><div class="stepc"><img src="steps/securinglock-2.webp" alt="Securing lock, step 1" width="1200" height="675" loading="lazy"><div class="t"><span class="n">1</span><p>Run the rope over the load and around the anchor, and bring the end back to the rope.</p></div></div><div class="stepc"><img src="steps/securinglock-3.webp" alt="Securing lock, step 2" width="1200" height="675" loading="lazy"><div class="t"><span class="n">2</span><p>Push the end through one of the rope’s loops.</p></div></div><div class="stepc"><img src="steps/securinglock-4.webp" alt="Securing lock, step 3" width="1200" height="675" loading="lazy"><div class="t"><span class="n">3</span><p>Pull it through.</p></div></div><div class="stepc"><img src="steps/securinglock-5.webp" alt="Securing lock, step 4" width="1200" height="675" loading="lazy"><div class="t"><span class="n">4</span><p>Take the end around and through once more.</p></div></div><div class="stepc"><img src="steps/securinglock-6.webp" alt="Securing lock, step 5" width="1200" height="675" loading="lazy"><div class="t"><span class="n">5</span><p>Pull tight. It holds the load and releases without a knot to pick apart.</p></div></div></div>
-    </div>
-    <div class="aside">
-      <div class="acard"><h3>Use it for</h3><ul class="uses" style="margin:0"><li>Cargo</li><li>Roof racks</li><li>Timber</li><li>Boats</li></ul><a class="inuse" href="products.html" style="margin-top:6px"><img src="img/strip-atv-rack.webp" alt="" width="900" height="675" loading="lazy"><span><b>Securing lock on a quad rack</b>See the products →</span></a></div>
-      <div class="acard"><h3>Products</h3><ul><li><a href="outdoor-set.html">Outdoor set →</a></li><li><a href="4x4-set.html">4x4 offroad set →</a></li><li><a href="bulk-roll.html">Bulk roll →</a></li></ul></div>
-      <div class="acard red"><h3>Get the rope</h3><p>Pro packs, sets and bulk rope, shipped worldwide from Sweden.</p><a class="btn" href="https://texsolvshop.com/collections/runlock">Shop RunLock <span class="arr">→</span></a></div>
-    </div>
-  </div>
-</section>
-<section class="sec white">
   <div class="wrap">
-    <div class="sec-head"><div class="eyebrow">The other locks</div><h2>Four locks. That is all you need.</h2></div>
-    <div class="lockrow"><a class="lockc" href="running-loop.html"><img src="steps/runningloop-4.webp" alt="" width="1200" height="675" loading="lazy"><b>Running loop</b><span>Tow hitch, posts and rails</span></a><a class="lockc" href="fixed-loop.html"><img src="steps/fixedloop-5.webp" alt="" width="1200" height="675" loading="lazy"><b>Fixed loop</b><span>Carabiners, rings</span></a><a class="lockc" href="quick-loop.html"><img src="steps/quickloop-7.webp" alt="" width="1200" height="675" loading="lazy"><b>Quick loop, fixed release</b><span>Towing, trailer rings</span></a></div>
+    <div class="rope" id="rope">
+      <div class="tstage" aria-label="Interactive rope in 3D: drag it, push it through its own loops, hang it on the hooks and the ring" role="img"><div class="tcap" aria-hidden="true"><span class="tcap-msg"></span><span class="tcap-btns"><button type="button" class="tcap-show">Show me</button><button type="button" class="tcap-reset">Reset</button></span></div></div>
+      <div class="tpanel">
+        <div><div class="eyebrow">Free play</div><h3 class="ttitle">Loose rope, two hooks and a ring</h3></div>
+        <p class="tmsg" aria-live="polite"></p>
+        <div class="trow"><button type="button" class="tshow">Show me a lock</button><button type="button" class="treset">Reset rope</button><button type="button" class="tfull">Fullscreen</button></div>
+        <ul class="tlist">
+          <li><b>Drag</b> any part of the rope. What you hold comes a little towards you.</li>
+          <li><b>Hold still</b> over a loop or the ring and the part you hold goes through; hold a loop still over a hook and it goes on the hook.</li>
+          <li><b>Lock:</b> end through a loop, the loop over a hook, pull. The loop runs up to the hook and closes on the rope. Slack it off and it opens.</li>
+          <li><b>Turn the view</b> with a right-drag, or two fingers on a phone, to see a lock from the side.</li>
+        </ul>
+        <div class="tcol"><span>Rope colour</span><div class="tdots"><button type="button" data-c="orange" style="--c:#ff6b1a" aria-label="Orange"></button><button type="button" data-c="yellow" style="--c:#e6ff3d" aria-label="Fluorescent yellow"></button><button type="button" data-c="blue" style="--c:#1d5f8f" aria-label="Blue"></button><button type="button" data-c="white" style="--c:#f2eee6" aria-label="White"></button><button type="button" data-c="black" style="--c:#111" aria-label="Black"></button></div></div>
+      </div>
+    </div>
   </div>
 </section>
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">What you are looking at</div><h2>The same rope, in numbers.</h2><p class="lead">The rope on screen is built like the real one: two strands, joined every few centimetres, free in between. The loops open and close because the strands can part, and the locks hold because a loaded loop closes on whatever runs through it. Nothing is scripted. Show me a lock only moves the hand; the rope does the rest.</p></div>
+    <div class="lockrow"><a class="lockc" href="the-rope.html"><img src="img/strip-timber-wall.webp" alt="" width="900" height="900" loading="lazy" style="aspect-ratio:16/9;object-fit:cover"><b>How it is made</b><span>Two strands, braided together at intervals, and why that holds.</span></a><a class="lockc" href="how-it-works.html"><img src="steps/runningloop-4.webp" alt="" width="1200" height="675" loading="lazy"><b>The four locks</b><span>Running, fixed, quick and securing, step by step in 3D.</span></a><a class="lockc" href="sizes.html"><img src="img/render1.webp" alt="" width="1800" height="823" loading="lazy" style="aspect-ratio:16/9;object-fit:cover"><b>Sizes and colours</b><span>Six sizes from 4 to 12 mm, five colours.</span></a><a class="lockc" href="products.html"><img src="img/propack.webp" alt="" width="1000" height="999" loading="lazy" style="aspect-ratio:16/9;object-fit:cover"><b>Products</b><span>Sets and single ropes for the road, the forest, the boat and the home.</span></a></div>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">
     <div>
@@ -102,8 +91,7 @@ window.rlShowConsent=function(){var b=document.getElementById('cb');if(b)b.hidde
 <div class="cbv" id="cbv" hidden></div>
 <div class="cb" id="cb" role="dialog" aria-labelledby="cbh" hidden><div class="cbt"><h3 id="cbh">Cookies for visitor statistics?</h3><p>We would like to use Google Analytics to see which pages are read. No cookies are set unless you say yes. <a href="privacy.html">How we handle your data →</a></p></div><div class="cbb"><button type="button" class="y" onclick="rlConsent('yes')">Yes, that's fine</button><button type="button" onclick="rlConsent('no')">No thanks</button></div></div>
 <div class="cb" id="cb" role="dialog" aria-labelledby="cbh" hidden><div class="cbt"><h3 id="cbh">Cookies for visitor statistics?</h3><p>We would like to use Google Analytics to see which pages are read. No cookies are set unless you say yes. <a href="privacy.html">How we handle your data →</a></p></div><div class="cbb"><button type="button" class="y" onclick="rlConsent('yes')">Yes, that's fine</button><button type="button" onclick="rlConsent('no')">No thanks</button></div></div>
-<script src="vidload.js"></script>
-<script src="player.js"></script>
+<script type="module" src="rope3d.js"></script>
 <script src="nav.js"></script>
 </body>
 </html>
